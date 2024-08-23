@@ -19,6 +19,7 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
         lzEndpoint = lzEndPointMock.address
         log(`Wrapped Ether deployed at ${lzEndpoint}`)
     }
+    log("lzEndpoint:", lzEndpoint)
 
     if(!ethers.utils.isAddress(lzEndpoint)) {
         log("ERROR: LZEndpoint for",network.name,"is not an address:", lzEndpoint)
