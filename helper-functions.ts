@@ -19,6 +19,10 @@ export const verify = async (contractAddress: string, args: any[]) => {
     }
 }
 
+export const sleep = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export const deployContractFromBytecode = async (deployer: string, contractName: string, args: any[], abi: any, bytecode: string, hre: HardhatRuntimeEnvironment) => {
     const { deployments, network } = hre
     const { deploy, log } = deployments

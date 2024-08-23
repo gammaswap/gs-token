@@ -9,11 +9,13 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
     const { getNamedAccounts, deployments, network } = hre
     const { log, get } = deployments
     const { deployer } = await getNamedAccounts()
-    log("deployer ", deployer)
+    log("deployer:", deployer)
 
     const _deployer = await hre.ethers.getSigner(deployer);
 
     const gs = await get("GS");
+    log("gs:", gs.address)
+
     const gsContract = await ethers.getContractAt("GS", gs.address);
 
     const lzPeers = isMainnet(hre) ? productionLzPeers : developmentLzPeers

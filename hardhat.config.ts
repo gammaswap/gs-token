@@ -40,19 +40,40 @@ const config: HardhatUserConfig = {
       },
       timeout: 1000000,
     },
-    arbitrumGoerli: {
-      url: `https://arb-goerli.g.alchemy.com/v2/${process.env.ALCHEMY_ARBITRUM_GOERLI_API_KEY}`,
-      accounts: {
-        mnemonic: process.env.ARBITRUM_GOERLI_MNEMONIC || "",
-      },
-      chainId: 421613,
-    },
     arbitrum: {
       url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_ARBITRUM_API_KEY}`,
       accounts: {
         mnemonic: process.env.ARBITRUM_MNEMONIC || "",
       },
       chainId: 42161,
+    },
+    base: {
+      url: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_BASE_API_KEY}`,
+      accounts: {
+        mnemonic: process.env.BASE_MNEMONIC || "",
+      },
+      chainId: 8453,
+    },
+    sepolia: {
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_SEPOLIA_API_KEY}`,
+      accounts: {
+        mnemonic: process.env.SEPOLIA_MNEMONIC || "",
+      },
+      chainId: 11155111,
+    },
+    arbitrumSepolia: {
+      url: `https://arb-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_ARBITRUM_SEPOLIA_API_KEY}`,
+      accounts: {
+        mnemonic: process.env.ARBITRUM_SEPOLIA_MNEMONIC || "",
+      },
+      chainId: 421614,
+    },
+    baseSepolia: {
+      url: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_BASE_SEPOLIA_API_KEY}`,
+      accounts: {
+        mnemonic: process.env.BASE_SEPOLIA_MNEMONIC || "",
+      },
+      chainId: 84532,
     },
   },
   etherscan: {
