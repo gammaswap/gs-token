@@ -4,7 +4,7 @@ export interface networkConfigItem {
     erc20Tokens?: ERC20Info
     timelock?: TimeLockInfo
     lzEndpoint?: string
-    eid?: string
+    lzEid?: number
     initialGSTokenAmt?: string
 }
 
@@ -29,7 +29,7 @@ export const networkConfig: networkConfigInfo = {
     mainnet: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        eid: "30101",
+        lzEid: 30101,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
@@ -44,7 +44,7 @@ export const networkConfig: networkConfigInfo = {
     sepolia: {
         blockConfirmations: 5,
         longBlockConfirmations: 10,
-        eid: "40161",
+        lzEid: 40161,
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
@@ -53,7 +53,7 @@ export const networkConfig: networkConfigInfo = {
     arbitrumSepolia: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        eid: "40231",
+        lzEid: 40231,
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         initialGSTokenAmt: "1600000000",
         erc20Tokens: {
@@ -67,7 +67,7 @@ export const networkConfig: networkConfigInfo = {
     arbitrum: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        eid: "30110",
+        lzEid: 30110,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         initialGSTokenAmt: "1600000000",
         timelock: {
@@ -96,7 +96,7 @@ export const networkConfig: networkConfigInfo = {
     base: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        eid: "30184",
+        lzEid: 30184,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
@@ -111,13 +111,16 @@ export const networkConfig: networkConfigInfo = {
     baseSepolia: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        eid: "40245",
+        lzEid: 40245,
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
         },
     },
 }
+
+export const developmentLzPeers = ["arbitrumSepolia", "baseSepolia", "sepolia"]
+export const productionLzPeers = ["arbitrum", "base", "mainnet"]
 
 export const developmentChains = ["hardhat", "localhost"]
 export const proposalsFile = "proposals.json"
