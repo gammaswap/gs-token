@@ -116,6 +116,7 @@ export const networkConfig: networkConfigInfo = {
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
+            gs:'0x61b655b617165a0504AbA43cb17f0aD72fE86078',
         },
     },
 }
