@@ -29,9 +29,14 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
             log("Setting Peer for network",peerNetwork," >> lzEid:", lzEid," gs:",gsAddr)
             if(lzEid > 0 && ethers.utils.isAddress(gsAddr)) {
                 const _gsAddr = ethers.utils.zeroPad(gsAddr, 32)
-                const tx = await (await gsContract.connect(_deployer).setPeer(lzEid, _gsAddr)).wait();
-                if(tx && tx.transactionHash) {
-                    log("GS in",network.name,"set peer for",peerNetwork,"for",tx.transactionHash)
+                const hasPeer = await gsContract.isPeer(lzEid, _gsAddr);
+                if(hasPeer) {
+                    const tx = await (await gsContract.connect(_deployer).setPeer(lzEid, _gsAddr)).wait();
+                    if(tx && tx.transactionHash) {
+                        log("GS in",network.name,"set peer for",peerNetwork,"for",tx.transactionHash)
+                    }
+                } else {
+                    log("GS already has peer at",peerNetwork)
                 }
             } else {
                 log("Peer not set for",peerNetwork)
