@@ -32,10 +32,10 @@ const deploySetLZPeers: DeployFunction = async function (hre: HardhatRuntimeEnvi
             if(lzEid > 0 && ethers.utils.isAddress(gsAddr)) {
                 const _gsAddr = ethers.utils.zeroPad(gsAddr, 32)
                 const hasPeer = await gsContract.isPeer(lzEid, _gsAddr);
-                if(hasPeer) {
+                if(!hasPeer) {
                     const tx = await (await gsContract.connect(_deployer).setPeer(lzEid, _gsAddr)).wait(confirmations);
                     if(tx && tx.transactionHash) {
-                        log("GS in",network.name,"set peer for",peerNetwork,"for",tx.transactionHash)
+                        log("GS in",network.name,"set peer for",peerNetwork,"in",tx.transactionHash)
                     }
                 } else {
                     log("GS already has peer at",peerNetwork)
