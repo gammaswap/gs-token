@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@layerzerolabs/oft-evm/contracts/OFT.sol";
 
-/// @title GammaPool ERC20 Token
-/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
+/// @title GammaSwap ERC20 Token (https://www.gammaswap.com)
+/// @author Daniel D. Alcarraz (https://x.com/0x_danr)
 /// @notice ERC20 token used to secure the GammaSwap protocol
 contract GS is OFT, Initializable, UUPSUpgradeable {
     uint256 constant public MAX_SUPPLY = 1_600_000_000 * (10**18);
