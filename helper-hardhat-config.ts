@@ -42,8 +42,8 @@ export const networkConfig: networkConfigInfo = {
         }
     },
     sepolia: {
-        blockConfirmations: 5,
-        longBlockConfirmations: 10,
+        blockConfirmations: 2,
+        longBlockConfirmations: 3,
         lzEid: 40161,
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {

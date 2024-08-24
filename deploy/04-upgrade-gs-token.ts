@@ -48,4 +48,4 @@ const deployPositionManagerImplContract: DeployFunction = async function (hre: H
 }
 
 export default deployPositionManagerImplContract
-deployPositionManagerImplContract.tags = ["all", "gs-token-update"]
+deployPositionManagerImplContract.tags = ["all", "upd-gs-token"]
