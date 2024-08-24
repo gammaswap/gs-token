@@ -6,7 +6,10 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@layerzerolabs/oft-evm/contracts/OFT.sol";
 
 contract GS is OFT, Initializable, UUPSUpgradeable {
-    uint256 constant public s_maxSupply = 1_600_000_000 * (10**18);
+    uint256 constant public MAX_SUPPLY = 1_600_000_000 * (10**18);
+
+    string private constant mName = "GammaSwap";
+    string private constant mSymbol = "GS";
 
     address private _pendingOwner;
 
@@ -15,6 +18,16 @@ contract GS is OFT, Initializable, UUPSUpgradeable {
     constructor(address lzEndpoint, address owner, uint256 amount) OFT("GammaSwap", "GS", lzEndpoint, owner) {
         super._transferOwnership(owner);
         _mint(owner, amount);
+    }
+
+    /// @dev Returns the name of the token.
+    function name() public view virtual override returns (string memory) {
+        return mName;
+    }
+
+    /// @dev Returns the symbol of the token, usually a shorter version of the name.
+    function symbol() public view virtual override returns (string memory) {
+        return mSymbol;
     }
 
     /// @dev Initialize LPZapper when used as a proxy contract
@@ -52,7 +65,7 @@ contract GS is OFT, Initializable, UUPSUpgradeable {
     }
 
     function _mint(address to, uint256 amount) internal override(ERC20) {
-        require(amount <= s_maxSupply, "GS: MAX_SUPPLY");
+        require(amount <= MAX_SUPPLY, "GS: MAX_SUPPLY");
         super._mint(to, amount);
     }
 
