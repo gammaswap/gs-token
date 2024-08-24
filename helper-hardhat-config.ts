@@ -48,6 +48,7 @@ export const networkConfig: networkConfigInfo = {
         lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
+            gs: '0x63Aa1F040c35106d9979aeC22b624E8524E6D21E',
         }
     },
     arbitrumSepolia: {
