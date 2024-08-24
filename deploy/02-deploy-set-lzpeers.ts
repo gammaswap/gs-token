@@ -4,7 +4,7 @@ import { isMainnet } from "../helper-functions"
 import { ethers } from "hardhat";
 import { networkConfig, developmentLzPeers, productionLzPeers } from "../helper-hardhat-config";
 
-const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deploySetLZPeers: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // @ts-ignore
     const { getNamedAccounts, deployments, network } = hre
     const { log, get } = deployments
@@ -47,5 +47,5 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
     }
 }
 
-export default deployGSToken
-deployGSToken.tags = ["all", "lz-peers", "all-timelock"]
+export default deploySetLZPeers
+deploySetLZPeers.tags = ["all", "lz-peers", "all-timelock"]

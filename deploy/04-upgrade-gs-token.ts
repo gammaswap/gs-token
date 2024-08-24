@@ -4,7 +4,7 @@ import {deployContract, deployContractByArtifact} from "../helper-functions"
 import { ethers } from "hardhat";
 import { networkConfig } from "../helper-hardhat-config";
 
-const deployPositionManagerImplContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const upgradeGSImplContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // @ts-ignore
     const { getNamedAccounts, deployments, network } = hre
     const { log, get } = deployments
@@ -47,5 +47,5 @@ const deployPositionManagerImplContract: DeployFunction = async function (hre: H
     log("----------------------------------------------------")
 }
 
-export default deployPositionManagerImplContract
-deployPositionManagerImplContract.tags = ["all", "upd-gs-token"]
+export default upgradeGSImplContract
+upgradeGSImplContract.tags = ["all", "upd-gs-token"]
