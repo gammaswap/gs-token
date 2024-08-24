@@ -7,9 +7,9 @@ import "hardhat-deploy";
 
 require("hardhat-contract-sizer"); // "npx hardhat size-contracts" or "yarn run hardhat size-contracts"
 
-dotenv.config();
+dotenv.config({ path: __dirname + '/.env'});
 
-// This is a sample Hardhat task. To learn how to create your own go to
+// This is a sample Hardhat tasks. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -18,6 +18,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
+
+import "./tasks/bridge";
 
 const config: HardhatUserConfig = {
   solidity: {

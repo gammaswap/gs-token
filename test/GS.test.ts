@@ -127,7 +127,7 @@ describe.only('GS Test', function () {
                 lzTokenFee: lzTokenFee
             }
 
-            // Executing the send operation from myOFTA contract
+            // Executing the send operation from srcGov contract
             let refundAddress = ownerA.address;
             await srcGovToken.send(sendParam, messagingFee, refundAddress,
                 {value: messagingFee.nativeFee} // pass a msg.value to pay the LayerZero message fee
@@ -154,7 +154,7 @@ describe.only('GS Test', function () {
             messagingFee.nativeFee = nativeFee
             messagingFee.lzTokenFee = lzTokenFee
 
-            // Executing the send operation from myOFTA contract
+            // Executing the send operation from dstGov contract
             refundAddress = ownerB.address;
             await dstGovToken.connect(ownerB).send(sendParam, messagingFee, refundAddress,
                 {value: messagingFee.nativeFee} // pass a msg.value to pay the LayerZero message fee
