@@ -11,6 +11,8 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
     const { deployer } = await getNamedAccounts()
     log("deployer:", deployer)
 
+    const confirmations = networkConfig[network.name].longBlockConfirmations;
+
     const _deployer = await hre.ethers.getSigner(deployer);
 
     let lzEndpoint = networkConfig[network.name].lzEndpoint
@@ -36,7 +38,7 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
 
     const gsContract = await ethers.getContractAt("GS", gs.address);
 
-    const tx = await (await gsContract.connect(_deployer).initialize(deployer, initialAmount)).wait();
+    const tx = await (await gsContract.connect(_deployer).initialize(deployer, initialAmount)).wait(confirmations);
     if(tx && tx.transactionHash) {
         log("GS initialized at", tx.transactionHash)
     }
@@ -44,4 +46,4 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
 }
 
 export default deployGSToken
-deployGSToken.tags = ["all", "gs-token"]
+deployGSToken.tags = ["all", "gs-token", "all-timelock"]
