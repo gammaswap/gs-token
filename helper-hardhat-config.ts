@@ -58,6 +58,7 @@ export const networkConfig: networkConfigInfo = {
         initialGSTokenAmt: "1600000000",
         erc20Tokens: {
             weth: '',
+            gs: '0xe2E368617BA3671f586B0959C46FE6B2b97c35D5',
         },
         timelock: {
             proposers: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
