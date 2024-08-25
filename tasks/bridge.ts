@@ -8,8 +8,8 @@ task("bridge", "Checks balance of address")
     .addOptionalParam("to", "Destination address to send amount to")
     .addOptionalParam("net", "Destination network")
     .addOptionalParam("amount", "Amount of tokens to send")
-    .addOptionalParam("exec", "Set to > 0 if true to execute")
-    .addOptionalParam("v", "Add token address").setAction(async (taskArgs, hre) => {
+    .addOptionalParam("exec", "Set to > 0 to execute")
+    .addOptionalParam("v", "Set > 0 to print available addresses by name").setAction(async (taskArgs, hre) => {
     if (hre.network.name === "hardhat") {
         console.warn(
             "You are running on Hardhat network, which" +
