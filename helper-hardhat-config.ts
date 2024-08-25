@@ -104,6 +104,7 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30184,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        mintGSTokenTo: "0xaeAAc90117fb85a7DC961522DdFe96ABB358445B", // base multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
             proposers: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"], // base multisig
