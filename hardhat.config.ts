@@ -34,13 +34,18 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       chainId: 31337,
+      allowUnlimitedContractSize: true
+    },
+    localhost: {
+      chainId: 31337,
+      allowUnlimitedContractSize: true
     },
     mainnet: {
-      url: "https://eth-mainnet.alchemyapi.io/v2/" + process.env.ALCHEMY_API_KEY,
+      url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_MAINNET_API_KEY}`,
       accounts: {
-        mnemonic: process.env.MNEMONIC || "",
+        mnemonic: process.env.MAINNET_MNEMONIC || "",
       },
-      timeout: 1000000,
+      chainId: 1,
     },
     arbitrum: {
       url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_ARBITRUM_API_KEY}`,
