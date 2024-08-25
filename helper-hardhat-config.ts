@@ -32,7 +32,7 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30101,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
-        initialGSTokenAmt: "1367000000",
+        initialGSTokenAmt: "1300000000",
         mintGSTokenTo: "0x73c510b2A44B51a01A13A3539c38EB330FB9713D", // mainnet multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
@@ -74,7 +74,7 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30110,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
-        initialGSTokenAmt: "233000000",
+        initialGSTokenAmt: "300000000",
         mintGSTokenTo: "0xa075f1B6f50a1a02Ba22c3B43D72917a326b16c0", // LBP multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
