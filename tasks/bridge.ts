@@ -4,10 +4,11 @@ import { networkConfig } from "../helper-hardhat-config";
 
 // run as "npx hardhat --network arbitrumSepolia bridge --from user0 --to 0x123... --net baseSepolia"
 task("bridge", "Checks balance of address")
-    .addOptionalParam("from", "Named account")
-    .addOptionalParam("to", "Add token address")
-    .addOptionalParam("net", "Add token address")
-    .addOptionalParam("amount", "Add token address")
+    .addOptionalParam("from", "Named account sending amount from e.g. user0, deployer, etc.")
+    .addOptionalParam("to", "Destination address to send amount to")
+    .addOptionalParam("net", "Destination network")
+    .addOptionalParam("amount", "Amount of tokens to send")
+    .addOptionalParam("exec", "Set to > 0 if true to execute")
     .addOptionalParam("v", "Add token address").setAction(async (taskArgs, hre) => {
     if (hre.network.name === "hardhat") {
         console.warn(
@@ -67,6 +68,10 @@ task("bridge", "Checks balance of address")
     const gsAddr = cfg.erc20Tokens?.gs || ""
     console.log("Sending to network",dstNetwork," >> lzEid:", lzEid," gs:",gsAddr)
     if(amount.eq(0)) {
+        return
+    }
+    if(!taskArgs.exec) {
+        console.log("Set exec > 0 to execute tx")
         return
     }
     if(lzEid > 0 && hre.ethers.utils.isAddress(gsAddr)) {
