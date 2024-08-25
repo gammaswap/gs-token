@@ -8,6 +8,7 @@ import "@layerzerolabs/oft-evm/contracts/OFT.sol";
 /// @title GammaSwap ERC20 Token (https://www.gammaswap.com)
 /// @author Daniel D. Alcarraz (https://x.com/0x_danr)
 /// @notice ERC20 token used to secure the GammaSwap protocol
+/// @dev Uses LayerZero V2 OFT implementation to transfer between chains
 contract GS is OFT, Initializable, UUPSUpgradeable {
     uint256 constant public MAX_SUPPLY = 1_600_000_000 * (10**18);
 
@@ -18,7 +19,7 @@ contract GS is OFT, Initializable, UUPSUpgradeable {
 
     event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
 
-    constructor(address lzEndpoint, address owner, uint256 amount) OFT("GammaSwap", "GS", lzEndpoint, owner) {
+    constructor(address lzEndpoint, address owner, uint256 amount) OFT(mName, mSymbol, lzEndpoint, owner) {
         super._transferOwnership(owner);
         _mint(owner, amount);
     }
@@ -33,12 +34,13 @@ contract GS is OFT, Initializable, UUPSUpgradeable {
         return mSymbol;
     }
 
-    /// @dev Initialize LPZapper when used as a proxy contract
-    function initialize(address owner, uint256 amount) public virtual initializer {
+    /// @dev Initialize GS Token when used as a proxy contract
+    function initialize(address owner, address mintTo, uint256 amount) public virtual initializer {
         require(super.owner() == address(0), "GS: INITIALIZED");
+        require(mintTo != address(0), "GS: ZERO_ADDRESS");
         endpoint.setDelegate(owner);
         super._transferOwnership(owner);
-        _mint(owner, amount);
+        _mint(mintTo, amount);
     }
 
     /// @dev Returns the address of the pending owner.
@@ -68,8 +70,8 @@ contract GS is OFT, Initializable, UUPSUpgradeable {
     }
 
     function _mint(address to, uint256 amount) internal override(ERC20) {
-        require(amount <= MAX_SUPPLY, "GS: MAX_SUPPLY");
         super._mint(to, amount);
+        require(totalSupply() <= MAX_SUPPLY, "GS: MAX_SUPPLY");
     }
 
     function _burn(address account, uint256 amount) internal override(ERC20) {

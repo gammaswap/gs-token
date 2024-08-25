@@ -32,13 +32,20 @@ const deployGSToken: DeployFunction = async function (hre: HardhatRuntimeEnviron
     const initialAmount = ethers.BigNumber.from(networkConfig[network.name].initialGSTokenAmt || "0").mul(ONE)
     log("initialAmount:", initialAmount.toString());
 
+    const mintGSTokenTo = networkConfig[network.name].mintGSTokenTo || _deployer.address
+    if(!ethers.utils.isAddress(mintGSTokenTo)) {
+        log("ERROR: mintGSTokenTo is not an address:", mintGSTokenTo)
+        return
+    }
+    log("mintGSTokenTo:", mintGSTokenTo.toString());
+
     const gsImpl = await deployContractByArtifact(deployer, "GSImpl", "GS", [lzEndpoint, deployer, ethers.constants.Zero], hre);
 
     const gs = await deployContractByArtifact(deployer, "GS","ERC1967Proxy", [gsImpl.address,"0x"], hre);
 
     const gsContract = await ethers.getContractAt("GS", gs.address);
 
-    const tx = await (await gsContract.connect(_deployer).initialize(deployer, initialAmount)).wait(confirmations);
+    const tx = await (await gsContract.connect(_deployer).initialize(deployer, mintGSTokenTo, initialAmount)).wait(confirmations);
     if(tx && tx.transactionHash) {
         log("GS initialized at", tx.transactionHash)
     }

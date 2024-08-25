@@ -6,6 +6,7 @@ export interface networkConfigItem {
     lzEndpoint?: string
     lzEid?: number
     initialGSTokenAmt?: string
+    mintGSTokenTo?: string
 }
 
 export interface networkConfigInfo {
@@ -31,9 +32,11 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30101,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        initialGSTokenAmt: "1367000000",
+        mintGSTokenTo: "0x73c510b2A44B51a01A13A3539c38EB330FB9713D", // mainnet multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
-            proposers: ["0x73c510b2a44b51a01a13a3539c38eb330fb9713d"],
+            proposers: ["0x73c510b2a44b51a01a13a3539c38eb330fb9713d"], // mainnet multisig
             executors: ["0x73c510b2a44b51a01a13a3539c38eb330fb9713d"], // mainnet multisig
         },
         erc20Tokens: {
@@ -71,11 +74,12 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30110,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
-        initialGSTokenAmt: "1600000000",
+        initialGSTokenAmt: "233000000",
+        mintGSTokenTo: "0xa075f1B6f50a1a02Ba22c3B43D72917a326b16c0", // LBP multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
-            proposers: ["0x34b5870c0431158e11c68b770127fbd2ce953f7a"],
-            executors: ["0x34b5870c0431158e11c68b770127fbd2ce953f7a"],
+            proposers: ["0x34b5870c0431158e11c68b770127fbd2ce953f7a"], // arbitrum multisig
+            executors: ["0x34b5870c0431158e11c68b770127fbd2ce953f7a"], // arbitrum multisig
         },
         erc20Tokens: {
             weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
@@ -102,7 +106,7 @@ export const networkConfig: networkConfigInfo = {
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
-            proposers: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"],
+            proposers: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"], // base multisig
             executors: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"], // base multisig
         },
         erc20Tokens: {
