@@ -33,6 +33,7 @@ const deploySetLZPeers: DeployFunction = async function (hre: HardhatRuntimeEnvi
                 const _gsAddr = ethers.utils.zeroPad(gsAddr, 32)
                 const hasPeer = await gsContract.isPeer(lzEid, _gsAddr);
                 if(!hasPeer) {
+                    log("set peer")
                     const tx = await (await gsContract.connect(_deployer).setPeer(lzEid, _gsAddr)).wait(confirmations);
                     if(tx && tx.transactionHash) {
                         log("GS in",network.name,"set peer for",peerNetwork,"in",tx.transactionHash)

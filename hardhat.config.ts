@@ -34,13 +34,18 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       chainId: 31337,
+      allowUnlimitedContractSize: true
+    },
+    localhost: {
+      chainId: 31337,
+      allowUnlimitedContractSize: true
     },
     mainnet: {
-      url: "https://eth-mainnet.alchemyapi.io/v2/" + process.env.ALCHEMY_API_KEY,
+      url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_MAINNET_API_KEY}`,
       accounts: {
-        mnemonic: process.env.MNEMONIC || "",
+        mnemonic: process.env.MAINNET_MNEMONIC || "",
       },
-      timeout: 1000000,
+      chainId: 1,
     },
     arbitrum: {
       url: `https://arb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_ARBITRUM_API_KEY}`,
@@ -115,7 +120,15 @@ const config: HardhatUserConfig = {
     user0: {
       default: 0, // here this will by default take the first account as deployer
       1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-    }
+    },
+    user1: {
+      default: 1, // here this will by default take the first account as deployer
+      1: 1, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
+    },
+    user2: {
+      default: 2, // here this will by default take the first account as deployer
+      1: 2, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
+    },
   }
 };
 

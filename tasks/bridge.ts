@@ -4,10 +4,12 @@ import { networkConfig } from "../helper-hardhat-config";
 
 // run as "npx hardhat --network arbitrumSepolia bridge --from user0 --to 0x123... --net baseSepolia"
 task("bridge", "Checks balance of address")
-    .addOptionalParam("from", "Named account")
-    .addOptionalParam("to", "Add token address")
-    .addOptionalParam("net", "Add token address")
-    .addOptionalParam("v", "Add token address").setAction(async (taskArgs, hre) => {
+    .addOptionalParam("from", "Named account sending amount from e.g. user0, deployer, etc.")
+    .addOptionalParam("to", "Destination address to send amount to")
+    .addOptionalParam("net", "Destination network")
+    .addOptionalParam("amount", "Amount of tokens to send")
+    .addOptionalParam("exec", "Set to > 0 to execute")
+    .addOptionalParam("v", "Set > 0 to print available addresses by name").setAction(async (taskArgs, hre) => {
     if (hre.network.name === "hardhat") {
         console.warn(
             "You are running on Hardhat network, which" +
@@ -30,27 +32,50 @@ task("bridge", "Checks balance of address")
         sender = namedAccounts["deployer"]
     }
     console.log("sender >> ", sender)
+    if(!hre.ethers.utils.isAddress(sender)) {
+        console.log("Error: invalid sender >>", sender)
+        return
+    }
+    const receiver = taskArgs.to || sender
+    console.log("receiver:",receiver)
+
     const gs = await get("GS");
-    log("gs:", gs.address)
+    console.log("gs:", gs.address)
 
     const gsContract = await hre.ethers.getContractAt("GS", gs.address);
 
-    const resp = await gsContract.balanceOf(sender)
-    console.log("resp >> ", hre.ethers.utils.formatEther(resp))
+    const balance = await gsContract.balanceOf(sender)
+    const balanceStr = hre.ethers.utils.formatEther(balance)
+    console.log("balance >> ", balanceStr)
 
-    sender = await hre.ethers.getSigner(sender);
+    const amountStr = taskArgs.amount || "0"
+    const amount = hre.ethers.utils.parseEther(amountStr)
+    console.log("amount >> ", amountStr)
+    if(amount.gt(balance)) {
+        console.log("not enough balance:",balanceStr,"<",amountStr)
+        return;
+    }
 
     const dstNetwork = taskArgs.net
-    const receiver = taskArgs.to
-    console.log("receiver:",receiver)
 
     const cfg = networkConfig[dstNetwork]
+    if(!cfg) {
+        console.log("Please provide network `--net` e.g. arbitrumSepolia, sepolia, etc.")
+        return;
+    }
+
     const lzEid = Number(cfg.lzEid || "0");
     const gsAddr = cfg.erc20Tokens?.gs || ""
-    log("Sending to network",dstNetwork," >> lzEid:", lzEid," gs:",gsAddr)
+    console.log("Sending to network",dstNetwork," >> lzEid:", lzEid," gs:",gsAddr)
+    if(amount.eq(0)) {
+        return
+    }
+    if(!taskArgs.exec) {
+        console.log("Set exec > 0 to execute tx")
+        return
+    }
     if(lzEid > 0 && hre.ethers.utils.isAddress(gsAddr)) {
-        // Defining the amount of tokens to send and constructing the parameters for the send operation
-        const tokensToSend = hre.ethers.utils.parseEther('1');
+        sender = await hre.ethers.getSigner(sender);
 
         // Defining extra message execution options for the send operation
         const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString();
@@ -58,8 +83,8 @@ task("bridge", "Checks balance of address")
         const sendParam = {
             dstEid: lzEid, // Destination endpoint ID.
             to: hre.ethers.utils.zeroPad(receiver, 32), // Recipient address.
-            amountLD: tokensToSend, // Amount to send in local decimals.
-            minAmountLD: tokensToSend, // Minimum amount to send in local decimals.
+            amountLD: amount, // Amount to send in local decimals.
+            minAmountLD: amount, // Minimum amount to send in local decimals.
             extraOptions: options, // Additional options supplied by the caller to be used in the LayerZero message.
             composeMsg: "0x", // The composed message for the send() operation.
             oftCmd: "0x" // The OFT command to be executed, unused in default OFT implementations.
@@ -80,6 +105,8 @@ task("bridge", "Checks balance of address")
         let refundAddress = sender.address;
         await gsContract.connect(sender).send(sendParam, messagingFee, refundAddress,
             {value: messagingFee.nativeFee} // pass a msg.value to pay the LayerZero message fee
-        );/**/
+        );
+    } else {
+        console.log("Error: Invalid lzEid",lzEid,"or gsAddr",gsAddr,"in configurations")
     }
 })

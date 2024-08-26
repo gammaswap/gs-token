@@ -32,7 +32,7 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30101,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
-        initialGSTokenAmt: "1367000000",
+        initialGSTokenAmt: "1300000000",
         mintGSTokenTo: "0x73c510b2A44B51a01A13A3539c38EB330FB9713D", // mainnet multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
@@ -40,6 +40,7 @@ export const networkConfig: networkConfigInfo = {
             executors: ["0x73c510b2a44b51a01a13a3539c38eb330fb9713d"], // mainnet multisig
         },
         erc20Tokens: {
+            gs: '0x64d3CAe387405d91f7b0D91fb1D824A281719500',
             weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
             usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
         }
@@ -74,7 +75,7 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30110,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
-        initialGSTokenAmt: "233000000",
+        initialGSTokenAmt: "300000000",
         mintGSTokenTo: "0xa075f1B6f50a1a02Ba22c3B43D72917a326b16c0", // LBP multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
@@ -82,6 +83,7 @@ export const networkConfig: networkConfigInfo = {
             executors: ["0x34b5870c0431158e11c68b770127fbd2ce953f7a"], // arbitrum multisig
         },
         erc20Tokens: {
+            gs: '0xb08D8BeCAB1bf76A9Ce3d2d5fa946F65EC1d3e83',
             weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
             weeth: '0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe',
             usdc: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
@@ -104,12 +106,14 @@ export const networkConfig: networkConfigInfo = {
         longBlockConfirmations: 3,
         lzEid: 30184,
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        mintGSTokenTo: "0xaeAAc90117fb85a7DC961522DdFe96ABB358445B", // base multisig
         timelock: {
             minDelay: 24*60*60, // 1 day in seconds
             proposers: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"], // base multisig
             executors: ["0xaeaac90117fb85a7dc961522ddfe96abb358445b"], // base multisig
         },
         erc20Tokens: {
+            gs: '0xc4d44c155f95FD4E94600d191a4a01bb571dF7DF',
             weth: '0x4200000000000000000000000000000000000006',
             usdc: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
         },
