@@ -50,7 +50,9 @@ const updateMinDelay: DeployFunction = async function (hre: HardhatRuntimeEnviro
         return
     }
 
-    await sleep((currMinDelay + 20) * 1000)
+    const waitSeconds = Number(currMinDelay) + 20
+    log("waitSeconds:",waitSeconds)
+    await sleep(waitSeconds * 1000)
 
     tx = await (await timelockControllerContract.connect(_deployer).execute(timelockController.address, 0, data, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
     if(tx && tx.transactionHash) {

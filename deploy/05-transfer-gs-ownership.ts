@@ -50,7 +50,17 @@ const deployTransferGSOwnership: DeployFunction = async function (hre: HardhatRu
 
     const timelockControllerContract = await ethers.getContractAt("TimelockController", timelockController.address);
 
-    tx = await (await timelockControllerContract.connect(_deployer).schedule(gs.address, 0, data, hre.ethers.constants.HashZero, hre.ethers.constants.HashZero, minDelay)).wait(confirmations);
+    const eventName = "CallScheduled";
+    const latestBlock = await hre.ethers.provider.getBlockNumber();
+
+    log("latestBlock >> ", latestBlock)
+    // Fetch events
+    const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
+
+    const lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
+    log("lastId:", lastId)
+
+    tx = await (await timelockControllerContract.connect(_deployer).schedule(gs.address, 0, data, lastId, hre.ethers.constants.HashZero, minDelay)).wait(confirmations);
     if(tx && tx.transactionHash) {
         log("scheduled acceptOwnership() at", tx.transactionHash)
     } else {
@@ -58,9 +68,9 @@ const deployTransferGSOwnership: DeployFunction = async function (hre: HardhatRu
         return
     }
 
-    await sleep((minDelay + 20) * 1000)
+    await sleep((Number(minDelay) + 20) * 1000)
 
-    tx = await (await timelockControllerContract.connect(_deployer).execute(gs.address, 0, data, hre.ethers.constants.HashZero, hre.ethers.constants.HashZero)).wait(confirmations);
+    tx = await (await timelockControllerContract.connect(_deployer).execute(gs.address, 0, data, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
     if(tx && tx.transactionHash) {
         log("execute acceptOwnership() at", tx.transactionHash)
     }
