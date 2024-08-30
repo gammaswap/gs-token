@@ -50,7 +50,8 @@ task("bridge", "Checks balance of address")
 
     const amountStr = taskArgs.amount || "0"
     const amount = hre.ethers.utils.parseEther(amountStr)
-    console.log("amount >> ", amountStr)
+    console.log("amount: ", amountStr)
+    console.log("amountBN:",amount.toString())
     if(amount.gt(balance)) {
         console.log("not enough balance:",balanceStr,"<",amountStr)
         return;
@@ -103,9 +104,13 @@ task("bridge", "Checks balance of address")
 
         // Executing the send operation from GS contract in local network
         let refundAddress = sender.address;
-        await gsContract.connect(sender).send(sendParam, messagingFee, refundAddress,
+        const tx = await (await gsContract.connect(sender).send(sendParam, messagingFee, refundAddress,
             {value: messagingFee.nativeFee} // pass a msg.value to pay the LayerZero message fee
-        );
+        )).wait();
+
+        if(tx && tx.transactionHash) {
+            console.log("execute send at", tx.transactionHash)
+        }
     } else {
         console.log("Error: Invalid lzEid",lzEid,"or gsAddr",gsAddr,"in configurations")
     }
