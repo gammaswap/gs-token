@@ -35,7 +35,7 @@ export const networkConfig: networkConfigInfo = {
         initialGSTokenAmt: "1300000000",
         mintGSTokenTo: "0x73c510b2A44B51a01A13A3539c38EB330FB9713D", // mainnet multisig
         timelock: {
-            minDelay: 60, // 1 minute
+            minDelay: 24 * 60 * 60, // 1 day in seconds
             proposers: ["0x49eeAED06f17b192Eb2131367F2646af0b48F7b1"], // mainnet multisig
             executors: ["0x49eeAED06f17b192Eb2131367F2646af0b48F7b1"], // mainnet multisig
         },
@@ -78,7 +78,7 @@ export const networkConfig: networkConfigInfo = {
         initialGSTokenAmt: "300000000",
         mintGSTokenTo: "0xa075f1B6f50a1a02Ba22c3B43D72917a326b16c0", // LBP multisig
         timelock: {
-            minDelay: 60, // 1 minute
+            minDelay: 24 * 60 * 60, // 1 day in seconds
             proposers: ["0xe04f3384780e71e8DACD7A0790A0668903560E16"], // arbitrum multisig
             executors: ["0xe04f3384780e71e8DACD7A0790A0668903560E16"], // arbitrum multisig
         },
@@ -108,7 +108,7 @@ export const networkConfig: networkConfigInfo = {
         lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         mintGSTokenTo: "0xaeAAc90117fb85a7DC961522DdFe96ABB358445B", // base multisig
         timelock: {
-            minDelay: 60, // 1 minute
+            minDelay: 24 * 60 * 60, // 1 day in seconds
             proposers: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // base multisig
             executors: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // base multisig
         },

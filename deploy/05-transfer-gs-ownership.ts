@@ -58,7 +58,7 @@ const deployTransferGSOwnership: DeployFunction = async function (hre: HardhatRu
         return
     }
 
-    await sleep(minDelay * 2*1000)
+    await sleep((minDelay + 20) * 1000)
 
     tx = await (await timelockControllerContract.connect(_deployer).execute(gs.address, 0, data, hre.ethers.constants.HashZero, hre.ethers.constants.HashZero)).wait(confirmations);
     if(tx && tx.transactionHash) {
