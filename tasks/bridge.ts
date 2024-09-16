@@ -1,5 +1,5 @@
 import { task } from "hardhat/config"
-import {Options} from "@layerzerolabs/lz-v2-utilities";
+import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { networkConfig } from "../helper-hardhat-config";
 
 // run as "npx hardhat --network arbitrumSepolia bridge --from user0 --to 0x123... --net baseSepolia"

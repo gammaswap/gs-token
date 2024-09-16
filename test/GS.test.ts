@@ -6,7 +6,7 @@ import { GS, GS__factory } from '../typechain-types'
 
 import { Options } from '@layerzerolabs/lz-v2-utilities';
 
-describe.only('GS Test', function () {
+describe('GS Test', function () {
     // Constant representing a mock Endpoint ID for testing purposes
     // Declaration of variables to be used in the test suite
     let GS: GS__factory;
@@ -57,14 +57,14 @@ describe.only('GS Test', function () {
         const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString();
 
         const srcEnforcedOptionParams = [{
-            eid: srcChainId,
+            eid: dstChainId,
             msgType: 1, // 1: SEND, 2: SEND_AND_CALL
             options: options
         }];
         await srcGovToken.connect(ownerA).setEnforcedOptions(srcEnforcedOptionParams);
 
         const dstEnforcedOptionParams = [{
-            eid: dstChainId,
+            eid: srcChainId,
             msgType: 1, // 1: SEND, 2: SEND_AND_CALL
             options: options
         }];
