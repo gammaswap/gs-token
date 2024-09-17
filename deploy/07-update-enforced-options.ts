@@ -85,7 +85,7 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
 
     tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
     if(tx && tx.transactionHash) {
-        log("execute updateDelay(uint256) at", tx.transactionHash)
+        log("execute setEnforcedOptions(struct) at", tx.transactionHash)
     }
 
     for(let i = 0; i < lzPeers.length; i++) {
