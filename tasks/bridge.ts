@@ -8,6 +8,7 @@ task("bridge", "Checks balance of address")
     .addOptionalParam("to", "Destination address to send amount to")
     .addOptionalParam("net", "Destination network")
     .addOptionalParam("amount", "Amount of tokens to send")
+    .addOptionalParam("fee", "Additional native fee amount to add to send")
     .addOptionalParam("exec", "Set to > 0 to execute")
     .addOptionalParam("v", "Set > 0 to print available addresses by name").setAction(async (taskArgs, hre) => {
     if (hre.network.name === "hardhat") {
@@ -78,8 +79,11 @@ task("bridge", "Checks balance of address")
     if(lzEid > 0 && hre.ethers.utils.isAddress(gsAddr)) {
         sender = await hre.ethers.getSigner(sender);
 
+        const additional_native_fee = Number(taskArgs.fee || 0)
+        console.log("additional_native_fee:", additional_native_fee)
+
         // Defining extra message execution options for the send operation
-        const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString();
+        const options = Options.newOptions().addExecutorLzReceiveOption(additional_native_fee, 0).toHex().toString();
 
         const sendParam = {
             dstEid: lzEid, // Destination endpoint ID.
