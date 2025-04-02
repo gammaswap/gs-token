@@ -82,6 +82,20 @@ const config: HardhatUserConfig = {
       },
       chainId: 84532,
     },
+    sonic: {
+      url: `https://sonic-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_SONIC_API_KEY}`,
+      chainId: 146,
+      accounts: {
+        mnemonic: process.env.SONIC_MNEMONIC || "",
+      }
+    },
+    sonicTestnet: {
+      chainId: 57054,
+      url: `https://sonic-blaze.g.alchemy.com/v2/${process.env.ALCHEMY_SONIC_BLAZE_API_KEY}`,
+      accounts: {
+        mnemonic: process.env.SONIC_BLAZE_MNEMONIC || "",
+      },
+    }
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
@@ -108,6 +122,22 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-sepolia.basescan.org/api",
           browserURL: "https://sepolia-explorer.base.org/",
+        },
+      },
+      {
+        network: "sonic",
+        chainId: 146,
+        urls: {
+          apiURL: "https://api.sonicscan.org/api",
+          browserURL: "https://sonicscan.org"
+        }
+      },
+      {
+        network: "sonicTestnet",
+        chainId: 57054,
+        urls: {
+          apiURL: "https://api-testnet.sonicscan.org/api",
+          browserURL: "https://testnet.sonicscan.org",
         },
       },
     ],

@@ -128,10 +128,39 @@ export const networkConfig: networkConfigInfo = {
             gs:'0x61b655b617165a0504AbA43cb17f0aD72fE86078',
         },
     },
+    sonic: {
+        blockConfirmations: 2,
+        longBlockConfirmations: 3,
+        lzEid: 30332,
+        lzEndpoint: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+        timelock: {
+            minDelay: 24 * 60 * 60, // 1 day in seconds
+            proposers: [], // TODO: add Multisig
+            executors: [], // TODO: add Multisig
+        },
+        erc20Tokens: {
+            gs: '',
+            weth: '0x50c42deacd8fc9773493ed674b675be577f2634b',
+        },
+    },
+    sonicTestnet: { // Blaze
+        blockConfirmations: 2,
+        longBlockConfirmations: 3,
+        lzEid: 40349,
+        lzEndpoint: "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff",
+        erc20Tokens: {
+            gs: '0x33F179fABa05D274e9eaeae643a758a8a84c1269',
+            weth: '',
+        },
+        timelock: {
+            proposers: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
+            executors: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
+        }
+    },
 }
 
-export const developmentLzPeers = ["arbitrumSepolia", "baseSepolia", "sepolia"]
-export const productionLzPeers = ["arbitrum", "base", "mainnet"]
+export const developmentLzPeers = ["arbitrumSepolia", "baseSepolia", "sepolia", "sonicTestnet"]
+export const productionLzPeers = ["arbitrum", "base", "mainnet", "sonic"]
 
 export const developmentChains = ["hardhat", "localhost"]
 export const proposalsFile = "proposals.json"
