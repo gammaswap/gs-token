@@ -139,7 +139,7 @@ export const networkConfig: networkConfigInfo = {
             executors: [], // TODO: add Multisig
         },
         erc20Tokens: {
-            gs: '',
+            gs: '0xf9F143705b2BBDE9b4ABfD0320F328aE59364f5e',
             weth: '0x50c42deacd8fc9773493ed674b675be577f2634b',
         },
     },
