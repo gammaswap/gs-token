@@ -83,7 +83,7 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
     log("payloads:", payloads)
     log("targets :", targets)
     log("values  :", values)
-    log("lastId  :", values)
+    log("lastId  :", lastId)
     log("============================================================")
     let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
     if(tx && tx.transactionHash) {
