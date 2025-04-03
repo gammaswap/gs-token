@@ -38,23 +38,31 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
             const lzEid = Number(cfg.lzEid || "0");
             const op = await gsContract.enforcedOptions(lzEid, 1)
             log("op[",lzEid,"] before >> ", op)
+            if(op == "0x") {
+                const enforcedOptionParams = [{
+                    eid: lzEid,
+                    msgType: 1, // 1: SEND, 2: SEND_AND_CALL
+                    options: options
+                }];
 
-            const enforcedOptionParams = [{
-                eid: lzEid,
-                msgType: 1, // 1: SEND, 2: SEND_AND_CALL
-                options: options
-            }];
-
-            const data = gsContract.interface.encodeFunctionData('setEnforcedOptions', [enforcedOptionParams]);
-            log("data >>", data)
-            payloads.push(data)
-            targets.push(gs.address)
-            values.push(0)
+                const data = gsContract.interface.encodeFunctionData('setEnforcedOptions', [enforcedOptionParams]);
+                log("data >>", data)
+                payloads.push(data)
+                targets.push(gs.address)
+                values.push(0)
+            } else {
+                log("enforced options already set for",peerNetwork,"lzEid:",lzEid)
+            }
         }
     }
     log("payloads >> ", payloads)
     log("targets >> ", targets)
     log("values >> ", values)
+
+    if(payloads.length == 0) {
+        log("enforced options have already been set for all chains")
+        return
+    }
 
     const timelockControllerContract = await ethers.getContractAt("TimelockController", timelockController.address);
 
@@ -71,6 +79,12 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
     const lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
     log("lastId:", lastId)
 
+    log("==================scheduleBatch parameters==================")
+    log("payloads:", payloads)
+    log("targets :", targets)
+    log("values  :", values)
+    log("lastId  :", values)
+    log("============================================================")
     let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
     if(tx && tx.transactionHash) {
         log("scheduled setEnforcedOptions(struct) at", tx.transactionHash)
@@ -94,7 +108,7 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
             const cfg = networkConfig[peerNetwork]
             const lzEid = Number(cfg.lzEid || "0");
             const op = await gsContract.enforcedOptions(lzEid, 1)
-            log("op[", lzEid, " after >> ", op)
+            log("op[", lzEid, "] after >> ", op)
         }
     }
     log("----------------------------------------------------")
