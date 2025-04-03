@@ -134,7 +134,7 @@ export const networkConfig: networkConfigInfo = {
         lzEid: 30332,
         lzEndpoint: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
         timelock: {
-            minDelay: 24 * 60 * 60, // 1 day in seconds
+            minDelay: 600,//24 * 60 * 60, // 1 day in seconds
             proposers: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
             executors: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
         },
