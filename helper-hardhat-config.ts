@@ -135,8 +135,8 @@ export const networkConfig: networkConfigInfo = {
         lzEndpoint: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
         timelock: {
             minDelay: 24 * 60 * 60, // 1 day in seconds
-            proposers: [], // TODO: add Multisig
-            executors: [], // TODO: add Multisig
+            proposers: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
+            executors: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
         },
         erc20Tokens: {
             gs: '0xf9F143705b2BBDE9b4ABfD0320F328aE59364f5e',
