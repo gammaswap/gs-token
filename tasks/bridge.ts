@@ -96,7 +96,7 @@ task("bridge", "Checks balance of address")
         }
 
         // Fetching the native fee for the token send operation (nativeFee, lzTokenFee)
-        let [nativeFee, lzTokenFee] = await gsContract.quoteSend(sendParam, false);
+        let [nativeFee, lzTokenFee] = await gsContract.connect(sender).quoteSend(sendParam, false);
 
         console.log("nativeFee:",nativeFee.toString())
         console.log("lzTokenFee:",lzTokenFee.toString())
