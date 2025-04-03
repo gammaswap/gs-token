@@ -3,6 +3,7 @@ import { DeployFunction } from "hardhat-deploy/types"
 import { isMainnet } from "../helper-functions"
 import { ethers } from "hardhat";
 import { networkConfig, developmentLzPeers, productionLzPeers } from "../helper-hardhat-config";
+import { Options } from "@layerzerolabs/lz-v2-utilities";
 
 const deploySetLZPeers: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // @ts-ignore
@@ -37,6 +38,21 @@ const deploySetLZPeers: DeployFunction = async function (hre: HardhatRuntimeEnvi
                     const tx = await (await gsContract.connect(_deployer).setPeer(lzEid, _gsAddr)).wait(confirmations);
                     if(tx && tx.transactionHash) {
                         log("GS in",network.name,"set peer for",peerNetwork,"in",tx.transactionHash)
+
+                        const op = await gsContract.enforcedOptions(lzEid, 1)
+                        log("op[",lzEid,"] before >> ", op)
+
+                        const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString()
+                        const enforcedOptionParams = [{
+                            eid: lzEid,
+                            msgType: 1, // 1: SEND, 2: SEND_AND_CALL
+                            options: options
+                        }];
+
+                        const _tx = await (await gsContract.connect(_deployer).setEnforcedOptions(enforcedOptionParams)).wait(confirmations);
+                        if(_tx && _tx.transactionHash) {
+                            log("GS in",network.name,"set options",options,"for",peerNetwork,"in",_tx.transactionHash)
+                        }
                     }
                 } else {
                     log("GS already has peer at",peerNetwork)
