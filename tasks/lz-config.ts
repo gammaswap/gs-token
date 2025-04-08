@@ -32,6 +32,14 @@ task("lz-config", "Checks LZ configurations from current network to destination 
     console.log("endpointAddr:",endpointAddr)
     const contract = await hre.ethers.getContractAt(ethereumLzEndpointABI, endpointAddr);
 
+    const srcCfg = networkConfig[network.name]
+    if(!srcCfg) {
+        console.log("Please provide network `--net` e.g. arbitrumSepolia, sepolia, etc.")
+        return;
+    }
+    const srcEid = Number(srcCfg.lzEid || "0");
+    console.log("srcEid:",srcEid)
+
     const dstNetwork = taskArgs.dest
 
     const destCfg = networkConfig[dstNetwork]
@@ -42,14 +50,6 @@ task("lz-config", "Checks LZ configurations from current network to destination 
 
     const destEid = Number(destCfg.lzEid || "0");
     console.log("destEid:",destEid)
-
-    const srcCfg = networkConfig[network.name]
-    if(!srcCfg) {
-        console.log("Please provide network `--net` e.g. arbitrumSepolia, sepolia, etc.")
-        return;
-    }
-    const srcEid = Number(srcCfg.lzEid || "0");
-    console.log("srcEid:",srcEid)
 
     let sendLibAddress = await contract.getSendLibrary(oappAddress, destEid);
     let receiveLibAddress = (await contract.getReceiveLibrary(oappAddress, srcEid))?.lib || "0x";

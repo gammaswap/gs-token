@@ -2,6 +2,7 @@ import { task } from "hardhat/config"
 import { developmentLzPeers, networkConfig, productionLzPeers } from "../helper-hardhat-config";
 import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
 task("lz-set-config", "Set config for LZ network to dest network")
@@ -16,19 +17,20 @@ task("lz-set-config", "Set config for LZ network to dest network")
         }
 
         const { getNamedAccounts, deployments, network } = hre
-        const { log, get } = deployments
+        const { get } = deployments
         const { deployer } = await getNamedAccounts()
-        log(`deployer: ${deployer}`)
+        console.log(`deployer: ${deployer}`)
 
         const confirmations = networkConfig[network.name].longBlockConfirmations;
+        console.log("confirmations:",confirmations)
 
         const _deployer = await hre.ethers.getSigner(deployer);
 
         const timelockController = await get("TimelockController");
-        log(`timelockController: ${timelockController.address}`)
+        console.log(`timelockController: ${timelockController.address}`)
 
         const gs = await get("GS");
-        log(`gs: ${gs.address}`)
+        console.log(`gs: ${gs.address}`)
 
         const gsContract = (await hre.ethers.getContractAt('GS', gs.address)) as unknown as GS;
 
@@ -37,23 +39,20 @@ task("lz-set-config", "Set config for LZ network to dest network")
         const receiveLibAddress = networkConfig[network.name].lzReceiveLib; // Replace with your send message library address
         const executorAddress = networkConfig[network.name].lzExecutor;
 
-        log(`oappAddress: ${oappAddress}`)
-        log(`sendLibAddress: ${sendLibAddress}`)
-        log(`receiveLibAddress: ${receiveLibAddress}`)
-        log(`executorAddress: ${executorAddress}`)
+        console.log(`oappAddress: ${oappAddress}`)
+        console.log(`sendLibAddress: ${sendLibAddress}`)
+        console.log(`receiveLibAddress: ${receiveLibAddress}`)
+        console.log(`executorAddress: ${executorAddress}`)
 
         if(!validateAddress(sendLibAddress, hre, `Invalid sendLibAddress: ${sendLibAddress}`)) return;
         if(!validateAddress(receiveLibAddress, hre, `Invalid receiveLibAddress: ${receiveLibAddress}`)) return;
         if(!validateAddress(executorAddress, hre, `Invalid executorAddress: ${executorAddress}`)) return;
 
         const endpointAddress = await gsContract.endpoint();
-        log(`endpointAddress: ${endpointAddress}`)
+        console.log(`endpointAddress: ${endpointAddress}`)
 
         // ABI and Contract
-        const endpointAbi = [
-            'function setConfig(address oappAddress, address sendOrReceiveLibAddress, tuple(uint32 eid, uint32 configType, bytes config)[] setConfigParams) external',
-        ];
-        const endpointContract = new hre.ethers.Contract(endpointAddress, endpointAbi, _deployer);
+        const endpointContract = new hre.ethers.Contract(endpointAddress, EndpoingV2ABI, _deployer);
 
         const executorConfig = {
             maxMessageSize: 10000, // Example value, replace with actual
@@ -84,11 +83,24 @@ task("lz-set-config", "Set config for LZ network to dest network")
                 const destEid = Number(peerCfg.lzEid || "0");
                 if(destEid == 0) continue;
 
+                const isPeerSupported = await endpointContract.isSupportedEid(destEid)
+
+                if(!isPeerSupported) {
+                    console.log("Peer",peerNetwork,"with eid",destEid,"is not supported")
+                    continue
+                }
+
                 const sendCfg = networkConfig[network.name].lzSendULNConfig
                 if(sendCfg && sendCfg[peerNetwork]) {
                     const ulnConfig = getUlnConfig(sendCfg[peerNetwork])
 
                     if(!validateUlnConfig(ulnConfig, hre, `lzSendULNConfigError[${peerNetwork}]`)) return;
+
+                    console.log("==================Send Config Params Start==============================")
+                    console.log("destId:",destEid)
+                    console.log("lzSendULN.confirmation:", ulnConfig.confirmations)
+                    console.log("lzSendULN.requiredDVNCount:", ulnConfig.requiredDVNCount)
+                    console.log("lzSendULN.requiredDVNs:", ulnConfig.requiredDVNs)
 
                     const encodedUlnConfig = hre.ethers.utils.defaultAbiCoder.encode([configTypeUlnStruct], [ulnConfig]);
 
@@ -110,6 +122,8 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     payloads.push(data)
                     targets.push(endpointAddress)
                     values.push(0)
+
+                    console.log("==================Send Config Params End==============================")
                 }
 
                 const receiveCfg = networkConfig[network.name].lzSendULNConfig
@@ -117,6 +131,12 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     const ulnConfig = getUlnConfig(receiveCfg[peerNetwork])
 
                     if(!validateUlnConfig(ulnConfig, hre, `lzReceiveULNConfigError[${peerNetwork}]`)) return;
+
+                    console.log("==================Receive Config Params Start==============================")
+                    console.log("destEid:",destEid)
+                    console.log("lzReceiveULN.confirmation:", ulnConfig.confirmations)
+                    console.log("lzReceiveULN.requiredDVNCount:", ulnConfig.requiredDVNCount)
+                    console.log("lzReceiveULN.requiredDVNs:", ulnConfig.requiredDVNs)
 
                     const encodedUlnConfig = hre.ethers.utils.defaultAbiCoder.encode([configTypeUlnStruct], [ulnConfig]);
 
@@ -132,57 +152,54 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     payloads.push(data)
                     targets.push(endpointAddress)
                     values.push(0)
+                    console.log("==================Receive Config Params End==============================")
                 }
             }
         }
 
-        log("payloads >> ", payloads)
-        log("targets >> ", targets)
-        log("values >> ", values)
-
         if(payloads.length == 0) {
-            log("Peers have already been set for all chains")
+            console.log("No configurations to set")
             return
         }
 
         const timelockControllerContract = await hre.ethers.getContractAt("TimelockController", timelockController.address);
 
         const currMinDelay = await timelockControllerContract.getMinDelay();
-        log(`currMinDelay: ${currMinDelay}`)
+        console.log(`currMinDelay: ${currMinDelay}`)
 
         const eventName = "CallScheduled";
         const latestBlock = await hre.ethers.provider.getBlockNumber();
-        log("latestBlock:", latestBlock)
+        console.log("latestBlock:", latestBlock)
 
         // Fetch events
         const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
 
         const lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
-        log("lastId:", lastId)
+        console.log("lastId:", lastId)
 
-        log("==================scheduleBatch parameters==================")
-        log("payloads:", payloads)
-        log("targets :", targets)
-        log("values  :", values)
-        log("lastId  :", lastId)
-        log("============================================================")
+        console.log("==================scheduleBatch parameters==================")
+        console.log("payloads:", payloads)
+        console.log("targets :", targets)
+        console.log("values  :", values)
+        console.log("lastId  :", lastId)
+        console.log("============================================================")
         let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
         if(tx && tx.transactionHash) {
-            log("scheduled batch setConfig() at", tx.transactionHash)
+            console.log("scheduled batch setConfig() at", tx.transactionHash)
         } else {
-            log("ERROR scheduling batch setConfig()")
+            console.log("ERROR scheduling batch setConfig()")
             return
         }
 
         const waitSeconds = Number(currMinDelay) + 20
-        log("waitSeconds:",waitSeconds)
+        console.log("waitSeconds:",waitSeconds)
         await sleep(waitSeconds * 1000)
 
         tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
         if(tx && tx.transactionHash) {
-            log("execute batch setConfig() at", tx.transactionHash)
+            console.log("execute batch setConfig() at", tx.transactionHash)
         }
-        log("----------------------------------------------------")
+        console.log("----------------------------------------------------")/**/
     }
 );
 
@@ -198,26 +215,24 @@ function getUlnConfig(config: any) : any {
 }
 
 function validateUlnConfig(ulnConfig: any, hre: HardhatRuntimeEnvironment, errorName: string) : boolean {
-    const { deployments } = hre
-    const { log } = deployments
     if(!errorName || errorName.length == 0) {
         errorName = "ConfigError"
     }
     let isValid = true;
     if(ulnConfig.confirmations <= 0) {
-        log(`${errorName}: Invalid confirmations`, ulnConfig.confirmations)
+        console.log(`${errorName}: Invalid confirmations`, ulnConfig.confirmations)
         isValid = false
     }
     if(ulnConfig.requiredDVNCount <= 0) {
-        log(`${errorName}: Invalid requiredDVNCount`, ulnConfig.requiredDVNCount)
+        console.log(`${errorName}: Invalid requiredDVNCount`, ulnConfig.requiredDVNCount)
         isValid = false
     }
     if(!validateAddresses(ulnConfig.requiredDVNs, false, hre)) {
-        log(`${errorName}: Invalid requiredDVNs`, ulnConfig.requiredDVNs)
+        console.log(`${errorName}: Invalid requiredDVNs`, ulnConfig.requiredDVNs)
         isValid = false
     }
     if(!validateAddresses(ulnConfig.optionalDVNs, true, hre)) {
-        log(`${errorName}: Invalid optionalDVNs `, ulnConfig.optionalDVNs)
+        console.log(`${errorName}: Invalid optionalDVNs `, ulnConfig.optionalDVNs)
         isValid = false
     }
     return isValid;
@@ -240,13 +255,11 @@ function validateAddresses(addressList: string[], allowEmptyList: boolean, hre: 
 }
 
 function validateAddress(address: string, hre: HardhatRuntimeEnvironment, errorMsg: string) : boolean {
-    const { deployments } = hre
-    const { log } = deployments
     if(!hre.ethers.utils.isAddress(address) || address == hre.ethers.constants.AddressZero) {
         if(!errorMsg || errorMsg.length == 0) {
             errorMsg = `Invalid address: ${address}`
         }
-        log(errorMsg)
+        console.log(errorMsg)
         return false
     }
     return true

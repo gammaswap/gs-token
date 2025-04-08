@@ -96,8 +96,6 @@ export const networkConfig: networkConfigInfo = {
     arbitrumSepolia: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 40231,
-        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         initialGSTokenAmt: "1600000000",
         erc20Tokens: {
             weth: '',
@@ -107,6 +105,29 @@ export const networkConfig: networkConfigInfo = {
             proposers: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
             executors: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
         },
+        lzEid: 40231,
+        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+        lzSendLib: "0x4f7cd4DA19ABB31b0eC98b9066B9e857B1bf9C0E",
+        lzReceiveLib: "0x75Db67CDab2824970131D5aa9CECfC9F69c69636",
+        lzExecutor: "0x5Df3a1cEbBD9c8BA7F8dF51Fd632A9aef8308897",
+        lzSendULNConfig: {
+            baseSepolia: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            baseSepolia: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                ]
+            }
+        }
     },
     arbitrum: {
         blockConfirmations: 2,
@@ -199,12 +220,33 @@ export const networkConfig: networkConfigInfo = {
     baseSepolia: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 40245,
-        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
             gs:'0x61b655b617165a0504AbA43cb17f0aD72fE86078',
         },
+        lzEid: 40245,
+        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+        lzSendLib: "0xC1868e054425D378095A003EcbA3823a5D0135C9",
+        lzReceiveLib: "0x12523de19dc41c91F7d2093E0CFbB76b17012C8d",
+        lzExecutor: "0x8A3D588D9f6AC041476b094f97FF94ec30169d3D",
+        lzSendULNConfig: {
+            sonicTestnet: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0xe1a12515F9AB2764b887bF60B923Ca494EBbB2d6'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            sonicTestnet: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0xe1a12515F9AB2764b887bF60B923Ca494EBbB2d6'
+                ]
+            }
+        }
     },
     sonic: {
         blockConfirmations: 2,
@@ -276,8 +318,6 @@ export const networkConfig: networkConfigInfo = {
     sonicTestnet: { // Blaze
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 40349,
-        lzEndpoint: "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff",
         erc20Tokens: {
             gs: '0x33F179fABa05D274e9eaeae643a758a8a84c1269',
             weth: '',
@@ -285,6 +325,29 @@ export const networkConfig: networkConfigInfo = {
         timelock: {
             proposers: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
             executors: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
+        },
+        lzEid: 40349,
+        lzEndpoint: "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff",
+        lzSendLib: "0xd682ECF100f6F4284138AA925348633B0611Ae21",
+        lzReceiveLib: "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C",
+        lzExecutor: "0x9dB9Ca3305B48F196D18082e91cB64663b13d014",
+        lzSendULNConfig: {
+            baseSepolia: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            baseSepolia: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                ]
+            }
         }
     },
 }
