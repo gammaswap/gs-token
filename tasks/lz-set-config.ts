@@ -1,7 +1,6 @@
 import { task } from "hardhat/config"
 import { developmentLzPeers, networkConfig, productionLzPeers } from "../helper-hardhat-config";
 import { GS } from "../typechain-types";
-import { isMainnet, sleep } from "../helper-functions";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
@@ -251,4 +250,12 @@ function validateAddress(address: string, hre: HardhatRuntimeEnvironment, errorM
         return false
     }
     return true
+}
+
+function isMainnet(hre: HardhatRuntimeEnvironment) : boolean {
+    return hre.network.name === "arbitrum" || hre.network.name == "mainnet" || hre.network.name == "base" || hre.network.name == "sonic";
+}
+
+function sleep(ms: number) : Promise<any> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
