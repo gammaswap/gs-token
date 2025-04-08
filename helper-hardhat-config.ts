@@ -5,8 +5,26 @@ export interface networkConfigItem {
     timelock?: TimeLockInfo
     lzEndpoint?: string
     lzEid?: number
+    lzSendLib?: string
+    lzReceiveLib?: string
+    lzExecutor?: string
+    lzSendULNConfig?: dvnConfigInfo
+    lzReceiveULNConfig?: dvnConfigInfo
     initialGSTokenAmt?: string
     mintGSTokenTo?: string
+}
+
+export interface dvnConfigItem {
+    requiredDVNCount: number
+    confirmations: number
+    requiredDVNs: string[]
+    optionalDVNCount?: number
+    optionalDVNThreshold?: number
+    optionalDVNs?: string[]
+}
+
+export interface dvnConfigInfo {
+    [key: string]: dvnConfigItem
 }
 
 export interface networkConfigInfo {
@@ -43,6 +61,26 @@ export const networkConfig: networkConfigInfo = {
             gs: '0x64d3CAe387405d91f7b0D91fb1D824A281719500',
             weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
             usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        },
+        lzSendULNConfig: {
+            sonic: {
+                confirmations: 15,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            sonic: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
         }
     },
     sepolia: {
@@ -68,7 +106,7 @@ export const networkConfig: networkConfigInfo = {
         timelock: {
             proposers: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
             executors: ["0x7B08e1Cf4C60Fd942Fa0C004F2739B8B8fA46e80","0x3429de008b6d3c85744b639511c8854d52c8f6ab"],
-        }
+        },
     },
     arbitrum: {
         blockConfirmations: 2,
@@ -99,6 +137,26 @@ export const networkConfig: networkConfigInfo = {
             gns: '0x18c11FD286C5EC11c3b683Caa813B77f5163A122',
             ptWEETH26SEP2024: '0xb8b0a120f6a68dd06209619f62429fb1a8e92fec',
             ptEZETH26SEP2024: '0x2ccfce9be49465cc6f947b5f6ac9383673733da9',
+        },
+        lzSendULNConfig: {
+            sonic: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            sonic: {
+                confirmations: 10,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
         }
     },
     base: {
@@ -117,6 +175,26 @@ export const networkConfig: networkConfigInfo = {
             weth: '0x4200000000000000000000000000000000000006',
             usdc: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
         },
+        lzSendULNConfig: {
+            sonic: {
+                confirmations: 10,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x9e059a54699a285714207b43B055483E78FAac25',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            sonic: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x9e059a54699a285714207b43B055483E78FAac25',
+                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                ]
+            }
+        }
     },
     baseSepolia: {
         blockConfirmations: 2,
@@ -142,6 +220,58 @@ export const networkConfig: networkConfigInfo = {
             gs: '0xf9F143705b2BBDE9b4ABfD0320F328aE59364f5e',
             weth: '0x50c42deacd8fc9773493ed674b675be577f2634b',
         },
+        lzSendULNConfig: {
+            base: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            },
+            arbitrum: {
+                confirmations: 10,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            },
+            mainnet: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            base: {
+                confirmations: 10,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            },
+            arbitrum: {
+                confirmations: 20,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            },
+            mainnet: {
+                confirmations: 15,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x282b3386571f7f794450d5789911a9804fa346b4',
+                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                ]
+            }
+        }
     },
     sonicTestnet: { // Blaze
         blockConfirmations: 2,

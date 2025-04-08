@@ -20,6 +20,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 });
 
 import "./tasks/bridge";
+import "./tasks/lz-config";
+import "./tasks/lz-set-config";
 
 const config: HardhatUserConfig = {
   solidity: {
