@@ -48,8 +48,6 @@ export const networkConfig: networkConfigInfo = {
     mainnet: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 30101,
-        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         initialGSTokenAmt: "1300000000",
         mintGSTokenTo: "0x73c510b2A44B51a01A13A3539c38EB330FB9713D", // mainnet multisig
         timelock: {
@@ -62,9 +60,14 @@ export const networkConfig: networkConfigInfo = {
             weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
             usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
         },
+        lzEid: 30101,
+        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        lzSendLib: "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1",
+        lzReceiveLib: "0xc02Ab410f0734EFa3F14628780e6e695156024C2",
+        lzExecutor: "0x173272739Bd7Aa6e4e214714048a9fE699453059",
         lzSendULNConfig: {
             sonic: {
-                confirmations: 15,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x589dEDbD617e0CBcB916A9223F4d1300c294236b',
@@ -86,11 +89,32 @@ export const networkConfig: networkConfigInfo = {
     sepolia: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 40161,
-        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
         erc20Tokens: {
             weth: '',
             gs: '0x63Aa1F040c35106d9979aeC22b624E8524E6D21E',
+        },
+        lzEid: 40161,
+        lzEndpoint: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+        lzSendLib: "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE",
+        lzReceiveLib: "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851",
+        lzExecutor: "0x718B92b5CB0a5552039B593faF724D182A881eDA",
+        lzSendULNConfig: {
+            sonic: {
+                confirmations: 2,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x8eebf8b423b73bfca51a1db4b7354aa0bfca9193'
+                ]
+            }
+        },
+        lzReceiveULNConfig: {
+            sonic: {
+                confirmations: 1,
+                requiredDVNCount: 2,
+                requiredDVNs: [
+                    '0x8eebf8b423b73bfca51a1db4b7354aa0bfca9193'
+                ]
+            }
         }
     },
     arbitrumSepolia: {
@@ -146,8 +170,6 @@ export const networkConfig: networkConfigInfo = {
     arbitrum: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 30110,
-        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         initialGSTokenAmt: "300000000",
         mintGSTokenTo: "0xa075f1B6f50a1a02Ba22c3B43D72917a326b16c0", // LBP multisig
         timelock: {
@@ -173,6 +195,11 @@ export const networkConfig: networkConfigInfo = {
             ptWEETH26SEP2024: '0xb8b0a120f6a68dd06209619f62429fb1a8e92fec',
             ptEZETH26SEP2024: '0x2ccfce9be49465cc6f947b5f6ac9383673733da9',
         },
+        lzEid: 30110,
+        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        lzSendLib: "0x975bcD720be66659e3EB3C0e4F1866a3020E493A",
+        lzReceiveLib: "0x7B9E184e07a6EE1aC23eAe0fe8D6Be2f663f05e6",
+        lzExecutor: "0x31CAe3B7fB82d847621859fb1585353c5720660D",
         lzSendULNConfig: {
             sonic: {
                 confirmations: 20,
@@ -185,7 +212,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             sonic: {
-                confirmations: 10,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x2f55C492897526677C5B68fb199ea31E2c126416',
@@ -197,8 +224,6 @@ export const networkConfig: networkConfigInfo = {
     base: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 30184,
-        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
         mintGSTokenTo: "0xaeAAc90117fb85a7DC961522DdFe96ABB358445B", // base multisig
         timelock: {
             minDelay: 24 * 60 * 60, // 1 day in seconds
@@ -210,9 +235,14 @@ export const networkConfig: networkConfigInfo = {
             weth: '0x4200000000000000000000000000000000000006',
             usdc: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
         },
+        lzEid: 30184,
+        lzEndpoint: "0x1a44076050125825900e736c501f859c50fE728c",
+        lzSendLib: "0xB5320B0B3a13cC860893E2Bd79FCd7e13484Dda2",
+        lzReceiveLib: "0xc70AB6f32772f59fBfc23889Caf4Ba3376C84bAf",
+        lzExecutor: "0x2CCA08ae69E0C44b18a57Ab2A87644234dAebaE4",
         lzSendULNConfig: {
             sonic: {
-                confirmations: 10,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x9e059a54699a285714207b43B055483E78FAac25',
@@ -265,8 +295,6 @@ export const networkConfig: networkConfigInfo = {
     sonic: {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
-        lzEid: 30332,
-        lzEndpoint: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
         timelock: {
             minDelay: 600,//24 * 60 * 60, // 1 day in seconds
             proposers: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
@@ -276,6 +304,11 @@ export const networkConfig: networkConfigInfo = {
             gs: '0xf9F143705b2BBDE9b4ABfD0320F328aE59364f5e',
             weth: '0x50c42deacd8fc9773493ed674b675be577f2634b',
         },
+        lzEid: 30332,
+        lzEndpoint: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+        lzSendLib: "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7",
+        lzReceiveLib: "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043",
+        lzExecutor: "0x4208D6E27538189bB48E603D6123A94b8Abe0A0b",
         lzSendULNConfig: {
             base: {
                 confirmations: 20,
@@ -286,7 +319,7 @@ export const networkConfig: networkConfigInfo = {
                 ]
             },
             arbitrum: {
-                confirmations: 10,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x282b3386571f7f794450d5789911a9804fa346b4',
@@ -304,7 +337,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             base: {
-                confirmations: 10,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x282b3386571f7f794450d5789911a9804fa346b4',
@@ -320,7 +353,7 @@ export const networkConfig: networkConfigInfo = {
                 ]
             },
             mainnet: {
-                confirmations: 15,
+                confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
                     '0x282b3386571f7f794450d5789911a9804fa346b4',
