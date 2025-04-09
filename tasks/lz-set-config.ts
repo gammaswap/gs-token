@@ -6,7 +6,7 @@ const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifa
 
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
 task("lz-set-config", "Set config for LZ network to dest network")
-    .addParam("dest", "destination network")
+    .addOptionalParam("dest", "destination network")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(
@@ -77,8 +77,8 @@ task("lz-set-config", "Set config for LZ network to dest network")
         const values = []
         for(let i = 0; i < lzPeers.length; i++) {
             const peerNetwork = lzPeers[i]
-            if (network.name != peerNetwork) {
-
+            const setNetwork = taskArgs.dest == peerNetwork || (!taskArgs.dest && network.name != peerNetwork)
+            if (setNetwork) {
                 const peerCfg = networkConfig[peerNetwork]
                 const destEid = Number(peerCfg.lzEid || "0");
                 if(destEid == 0) continue;
@@ -199,7 +199,7 @@ task("lz-set-config", "Set config for LZ network to dest network")
         if(tx && tx.transactionHash) {
             console.log("execute batch setConfig() at", tx.transactionHash)
         }
-        console.log("----------------------------------------------------")/**/
+        console.log("----------------------------------------------------")
     }
 );
 

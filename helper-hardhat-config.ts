@@ -115,7 +115,14 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 1,
                 requiredDVNCount: 1,
                 requiredDVNs: [
-                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                    '0x53f488e93b4f1b60e8e83aa374dbe1780a1ee8a8'
+                ]
+            },
+            sonicTestnet: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x53f488e93b4f1b60e8e83aa374dbe1780a1ee8a8'
                 ]
             }
         },
@@ -124,7 +131,14 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 1,
                 requiredDVNCount: 1,
                 requiredDVNs: [
-                    '0x88b27057a9e00c5f05dda29241027aff63f9e6e0'
+                    '0x53f488e93b4f1b60e8e83aa374dbe1780a1ee8a8'
+                ]
+            },
+            sonicTestnet: {
+                confirmations: 1,
+                requiredDVNCount: 1,
+                requiredDVNs: [
+                    '0x53f488e93b4f1b60e8e83aa374dbe1780a1ee8a8'
                 ]
             }
         }
