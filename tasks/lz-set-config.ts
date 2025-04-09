@@ -6,7 +6,8 @@ const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifa
 
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
 task("lz-set-config", "Set config for LZ network to dest network")
-    .addOptionalParam("dest", "destination network")
+    .addOptionalParam("dest", "Destination network")
+    .addOptionalParam("lastid", "Custom last Id in case last transaction was cancelled")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(
@@ -171,10 +172,14 @@ task("lz-set-config", "Set config for LZ network to dest network")
         const latestBlock = await hre.ethers.provider.getBlockNumber();
         console.log("latestBlock:", latestBlock)
 
-        // Fetch events
-        const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
+        let lastId = taskArgs.lastid
 
-        const lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
+        if(!lastId) {
+            // Fetch events
+            const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
+            lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
+        }
+
         console.log("lastId:", lastId)
 
         console.log("==================scheduleBatch parameters==================")
