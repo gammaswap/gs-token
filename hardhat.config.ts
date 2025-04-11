@@ -21,6 +21,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 import "./tasks/bridge";
 import "./tasks/lz-config";
+import "./tasks/lz-gen-config";
 import "./tasks/lz-set-config";
 import "./tasks/lz-set-delegate";
 

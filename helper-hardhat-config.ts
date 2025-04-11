@@ -67,11 +67,11 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x173272739Bd7Aa6e4e214714048a9fE699453059",
         lzSendULNConfig: {
             sonic: {
-                confirmations: 20,
+                confirmations: 15,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b', // LayerZero Labs
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5' // Nethermind
                 ]
             }
         },
@@ -80,8 +80,8 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b', // LayerZero Labs
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5' // Nethermind
                 ]
             }
         }
@@ -205,8 +205,8 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x2f55C492897526677C5B68fb199ea31E2c126416',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x2f55c492897526677c5b68fb199ea31e2c126416', // LayerZero Labs
+                    '0xa7b5189bca84cd304d8553977c7c614329750d99' // Nethermind
                 ]
             }
         },
@@ -215,8 +215,8 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x2f55C492897526677C5B68fb199ea31E2c126416',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x2f55c492897526677c5b68fb199ea31e2c126416', // LayerZero Labs
+                    '0xa7b5189bca84cd304d8553977c7c614329750d99' // Nethermind
                 ]
             }
         }
@@ -242,11 +242,11 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x2CCA08ae69E0C44b18a57Ab2A87644234dAebaE4",
         lzSendULNConfig: {
             sonic: {
-                confirmations: 20,
+                confirmations: 10,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x9e059a54699a285714207b43B055483E78FAac25',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x9e059a54699a285714207b43b055483e78faac25', // LayerZero Labs
+                    '0xcd37ca043f8479064e10635020c65ffc005d36f6' // Nethermind
                 ]
             }
         },
@@ -255,8 +255,8 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x9e059a54699a285714207b43B055483E78FAac25',
-                    '0xD56e4eAb23cb81f43168F9F45211Eb027b9aC7cc'
+                    '0x9e059a54699a285714207b43b055483e78faac25', // LayerZero Labs
+                    '0xcd37ca043f8479064e10635020c65ffc005d36f6' // Nethermind
                 ]
             }
         }
@@ -314,50 +314,50 @@ export const networkConfig: networkConfigInfo = {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             },
             arbitrum: {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             },
             mainnet: {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             }
         },
         lzReceiveULNConfig: {
             base: {
-                confirmations: 20,
+                confirmations: 10,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             },
             arbitrum: {
                 confirmations: 20,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             },
             mainnet: {
-                confirmations: 20,
+                confirmations: 15,
                 requiredDVNCount: 2,
                 requiredDVNs: [
-                    '0x282b3386571f7f794450d5789911a9804fa346b4',
-                    '0xdd7b5e1db4aafd5c8ec3b764efb8ed265aa5445b'
+                    '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
+                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
                 ]
             }
         }

@@ -7,7 +7,9 @@ const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifa
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
 task("lz-set-config", "Set config for LZ network to dest network")
     .addOptionalParam("dest", "Destination network")
-    .addOptionalParam("lastid", "Custom last Id in case last transaction was cancelled")
+    .addOptionalParam("lastid", "Custom last Id")
+    .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
+    .addOptionalParam("exec", "Set to > 0 to execute transaction")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(
@@ -98,7 +100,7 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     if(!validateUlnConfig(ulnConfig, hre, `lzSendULNConfigError[${peerNetwork}]`)) return;
 
                     console.log("==================Send Config Params Start==============================")
-                    console.log("destId:",destEid)
+                    console.log("destEid:", destEid, "-", peerNetwork)
                     console.log("lzSendULN.confirmation:", ulnConfig.confirmations)
                     console.log("lzSendULN.requiredDVNCount:", ulnConfig.requiredDVNCount)
                     console.log("lzSendULN.requiredDVNs:", ulnConfig.requiredDVNs)
@@ -127,14 +129,14 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     console.log("==================Send Config Params End==============================")
                 }
 
-                const receiveCfg = networkConfig[network.name].lzSendULNConfig
+                const receiveCfg = networkConfig[network.name].lzReceiveULNConfig
                 if(receiveCfg && receiveCfg[peerNetwork]) {
                     const ulnConfig = getUlnConfig(receiveCfg[peerNetwork])
 
                     if(!validateUlnConfig(ulnConfig, hre, `lzReceiveULNConfigError[${peerNetwork}]`)) return;
 
                     console.log("==================Receive Config Params Start==============================")
-                    console.log("destEid:",destEid)
+                    console.log("destEid:", destEid, "-", peerNetwork)
                     console.log("lzReceiveULN.confirmation:", ulnConfig.confirmations)
                     console.log("lzReceiveULN.requiredDVNCount:", ulnConfig.requiredDVNCount)
                     console.log("lzReceiveULN.requiredDVNs:", ulnConfig.requiredDVNs)
@@ -174,7 +176,9 @@ task("lz-set-config", "Set config for LZ network to dest network")
 
         let lastId = taskArgs.lastid
 
-        if(!lastId) {
+        if(taskArgs.zerolastid) {
+            lastId = hre.ethers.constants.HashZero
+        } else if(!lastId) {
             // Fetch events
             const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
             lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
@@ -188,23 +192,26 @@ task("lz-set-config", "Set config for LZ network to dest network")
         console.log("values  :", values)
         console.log("lastId  :", lastId)
         console.log("============================================================")
-        let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
-        if(tx && tx.transactionHash) {
-            console.log("scheduled batch setConfig() at", tx.transactionHash)
-        } else {
-            console.log("ERROR scheduling batch setConfig()")
-            return
-        }
+        if(taskArgs.exec) {
+            console.log("execute")
+            let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
+            if(tx && tx.transactionHash) {
+                console.log("scheduled batch setConfig() at", tx.transactionHash)
+            } else {
+                console.log("ERROR scheduling batch setConfig()")
+                return
+            }
 
-        const waitSeconds = Number(currMinDelay) + 20
-        console.log("waitSeconds:",waitSeconds)
-        await sleep(waitSeconds * 1000)
+            const waitSeconds = Number(currMinDelay) + 20
+            console.log("waitSeconds:",waitSeconds)
+            await sleep(waitSeconds * 1000)
 
-        tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
-        if(tx && tx.transactionHash) {
-            console.log("execute batch setConfig() at", tx.transactionHash)
+            tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
+            if(tx && tx.transactionHash) {
+                console.log("execute batch setConfig() at", tx.transactionHash)
+            }
+            console.log("----------------------------------------------------")
         }
-        console.log("----------------------------------------------------")
     }
 );
 
