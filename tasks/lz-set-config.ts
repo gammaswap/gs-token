@@ -191,6 +191,7 @@ task("lz-set-config", "Set config for LZ network to dest network")
         console.log("targets :", targets)
         console.log("values  :", values)
         console.log("lastId  :", lastId)
+        console.log("salt    :", hre.ethers.constants.HashZero)
         console.log("============================================================")
         if(taskArgs.exec) {
             console.log("execute")
