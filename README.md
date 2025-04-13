@@ -26,4 +26,15 @@ GammaSwap token used to secure liquidation and rebalancing logic in exchange for
 5. Run 05-transfer-gs-ownership.ts to transfer GS Token ownership to timelock-controller
 6. Run 07-update-enforced-options.ts on all non-new chains to set the enforced options from all peers to new peer.
 7. Run 08-deploy-timelock-set-lzpeers.ts to set LZ peers of non-new chains to new peer
+8. Check that network has correct configurations using task lz-config.ts. Make sure DVNs and Libs are not dead.
+   If they're not set or are dead then set the DVNs, SendLib, ReceiveLib, and Executor following the steps from section below.
 8. Run 06-update-timelock-delay.ts, to set the timelock on the new chain to 1 day (set minDelay to 1 day in seconds)
+
+# How to set DVNs, SendLib, ReceiveLib, and Executors
+
+1. Fill in LZ configurations in helper-hardhat-config.ts.
+    Get DVNs from https://docs.layerzero.network/v2/deployments/dvn-addresses
+    Get Send/Rec/Exec Libs from https://docs.layerzero.network/v2/deployments/deployed-contracts
+2. Make sure the DVN count, confirmations, and providers from send to receive chain match.
+3. Run task lz-set-config.ts
+4. Check configurations were set correctly (i.e. they match on both send and receive chain) using task lz-config.ts
