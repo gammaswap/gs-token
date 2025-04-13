@@ -296,7 +296,7 @@ export const networkConfig: networkConfigInfo = {
         blockConfirmations: 2,
         longBlockConfirmations: 3,
         timelock: {
-            minDelay: 600,//24 * 60 * 60, // 1 day in seconds
+            minDelay: 24 * 60 * 60, // 1 day in seconds
             proposers: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
             executors: ["0x507e48b87a50d323073c8EFA727B2d696E528EaB"], // sonic multisig
         },
