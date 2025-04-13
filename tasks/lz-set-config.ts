@@ -4,7 +4,7 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia"
+// run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
 task("lz-set-config", "Set config for LZ network to dest network")
     .addOptionalParam("dest", "Destination network")
     .addOptionalParam("lastid", "Custom last Id")

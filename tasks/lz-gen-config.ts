@@ -5,10 +5,8 @@ import { OAppEnforcedOption, OmniPointHardhat } from "@layerzerolabs/toolbox-har
 import { EndpointId } from "@layerzerolabs/lz-definitions";
 import { ExecutorOptionType } from "@layerzerolabs/lz-v2-utilities";
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-delegate --addr 0x1234... --lastid 0x12456789.."
+// run as "npx hardhat --network arbitrumSepolia lz-get-config"
 task("lz-gen-config", "Set delegate for GS token's endpoint")
-    .addOptionalParam("addr", "Custom address of delegate")
-    .addOptionalParam("lastid", "Custom last Id in case last transaction was cancelled")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(

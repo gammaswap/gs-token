@@ -32,6 +32,9 @@ GammaSwap token used to secure liquidation and rebalancing logic in exchange for
 
 # How to set DVNs, SendLib, ReceiveLib, and Executors
 
+*The delegate of GS token has to also be the timelockController. Otherwise the timelockController
+won't be able to set the configurations. Set the delegate using task lz-set-delegate.ts.
+
 1. Fill in LZ configurations in helper-hardhat-config.ts.
     Get DVNs from https://docs.layerzero.network/v2/deployments/dvn-addresses
     Get Send/Rec/Exec Libs from https://docs.layerzero.network/v2/deployments/deployed-contracts
