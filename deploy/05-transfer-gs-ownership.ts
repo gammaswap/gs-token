@@ -47,6 +47,7 @@ const deployTransferGSOwnership: DeployFunction = async function (hre: HardhatRu
     const iface = new hre.ethers.utils.Interface(abi);
 
     const data = iface.encodeFunctionData("acceptOwnership", []);
+    log("data:", data.toString())
 
     const timelockControllerContract = await ethers.getContractAt("TimelockController", timelockController.address);
 

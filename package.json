@@ -22,6 +22,9 @@
     "url": "https://github.com/gammaswap/gs-token/issues"
   },
   "devDependencies": {
+    "@layerzerolabs/lz-definitions": "^3.0.86",
+    "@layerzerolabs/metadata-tools": "^0.4.1",
+    "@layerzerolabs/toolbox-hardhat": "^0.6.9",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
     "@nomicfoundation/hardhat-foundry": "^1.1.1",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",

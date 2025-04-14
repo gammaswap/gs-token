@@ -192,5 +192,5 @@ export type GammaPool = {
 }
 
 export const isMainnet = (hre: HardhatRuntimeEnvironment) => {
-    return hre.network.name === "arbitrum" || hre.network.name == "mainnet" || hre.network.name == "base";
+    return hre.network.name === "arbitrum" || hre.network.name == "mainnet" || hre.network.name == "base" || hre.network.name == "sonic";
 }

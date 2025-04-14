@@ -1,6 +1,7 @@
 import { task } from "hardhat/config"
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { networkConfig } from "../helper-hardhat-config";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 // run as "npx hardhat --network arbitrumSepolia bridge --from user0 --to 0x123... --net baseSepolia"
 task("bridge", "Checks balance of address")
@@ -19,8 +20,8 @@ task("bridge", "Checks balance of address")
         )
     }
 
-    const { getNamedAccounts, deployments, network } = hre
-    const { log, get } = deployments
+    const { getNamedAccounts, deployments } = hre
+    const { get } = deployments
     const namedAccounts = await getNamedAccounts()
     let sender;
     if(!!taskArgs.v) {
@@ -72,10 +73,7 @@ task("bridge", "Checks balance of address")
     if(amount.eq(0)) {
         return
     }
-    if(!taskArgs.exec) {
-        console.log("Set exec > 0 to execute tx")
-        return
-    }
+
     if(lzEid > 0 && hre.ethers.utils.isAddress(gsAddr)) {
         sender = await hre.ethers.getSigner(sender);
 
@@ -96,7 +94,7 @@ task("bridge", "Checks balance of address")
         }
 
         // Fetching the native fee for the token send operation (nativeFee, lzTokenFee)
-        let [nativeFee, lzTokenFee] = await gsContract.quoteSend(sendParam, false);
+        let [nativeFee, lzTokenFee] = await gsContract.connect(sender).quoteSend(sendParam, false);
 
         console.log("nativeFee:",nativeFee.toString())
         console.log("lzTokenFee:",lzTokenFee.toString())
@@ -106,8 +104,20 @@ task("bridge", "Checks balance of address")
             lzTokenFee: lzTokenFee
         }
 
+        if(!!taskArgs.v) {
+            printSendParam(sendParam, hre)
+            printMessagingFee(messagingFee)
+        }
+
         // Executing the send operation from GS contract in local network
         let refundAddress = sender.address;
+        console.log("refundAddress >>",refundAddress)
+
+        if(!taskArgs.exec) {
+            console.log("Set exec > 0 to execute tx")
+            return
+        }
+
         const tx = await (await gsContract.connect(sender).send(sendParam, messagingFee, refundAddress,
             {value: messagingFee.nativeFee} // pass a msg.value to pay the LayerZero message fee
         )).wait();
@@ -119,3 +129,24 @@ task("bridge", "Checks balance of address")
         console.log("Error: Invalid lzEid",lzEid,"or gsAddr",gsAddr,"in configurations")
     }
 })
+
+function printSendParam(sendParamMsg: any, hre: HardhatRuntimeEnvironment) {
+    const sendParam = {
+        dstEid: sendParamMsg.dstEid, // Destination endpoint ID.
+        to: hre.ethers.utils.hexlify(sendParamMsg.to), // Recipient address.
+        amountLD: sendParamMsg.amountLD.toString(), // Amount to send in local decimals.
+        minAmountLD: sendParamMsg.minAmountLD.toString(), // Minimum amount to send in local decimals.
+        extraOptions: sendParamMsg.extraOptions, // Additional options supplied by the caller to be used in the LayerZero message.
+        composeMsg: sendParamMsg.composeMsg, // The composed message for the send() operation.
+        oftCmd: sendParamMsg.oftCmd // The OFT command to be executed, unused in default OFT implementations.
+    }
+    console.log("sendParam >>", sendParam)
+}
+
+function printMessagingFee(messagingFeeMsg: any) {
+    const messagingFee = {
+        nativeFee: messagingFeeMsg.nativeFee.toString(),
+        lzTokenFee: messagingFeeMsg.lzTokenFee.toString()
+    }
+    console.log("messagingFee >>", messagingFee)
+}

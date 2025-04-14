@@ -4,7 +4,6 @@ import { isMainnet, sleep } from "../helper-functions";
 import { developmentLzPeers, networkConfig, productionLzPeers } from "../helper-hardhat-config";
 import { ethers } from "hardhat";
 import { TimelockController, GS } from "../typechain-types";
-import { Options } from "@layerzerolabs/lz-v2-utilities";
 
 const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const { getNamedAccounts, deployments, network } = hre
@@ -18,8 +17,6 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
 
     const timelockController = await get("TimelockController");
     log(`timelockController: ${timelockController.address}`)
-
-    const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString();
 
     const gs = await get("GS");
     log(`gs: ${gs.address}`)
@@ -36,22 +33,24 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
         if (network.name != peerNetwork) {
             const cfg = networkConfig[peerNetwork]
             const lzEid = Number(cfg.lzEid || "0");
-            const op = await gsContract.enforcedOptions(lzEid, 1)
-            log("op[",lzEid,"] before >> ", op)
-            if(op == "0x") {
-                const enforcedOptionParams = [{
-                    eid: lzEid,
-                    msgType: 1, // 1: SEND, 2: SEND_AND_CALL
-                    options: options
-                }];
-
-                const data = gsContract.interface.encodeFunctionData('setEnforcedOptions', [enforcedOptionParams]);
-                log("data >>", data)
-                payloads.push(data)
-                targets.push(gs.address)
-                values.push(0)
+            const gsAddr = cfg.erc20Tokens?.gs || ""
+            log("Setting Peer for network",peerNetwork," >> lzEid:", lzEid," gs:",gsAddr)
+            if(lzEid > 0 && ethers.utils.isAddress(gsAddr)) {
+                const _gsAddr = ethers.utils.zeroPad(gsAddr, 32)
+                const hasPeer = await gsContract.isPeer(lzEid, _gsAddr);
+                if(!hasPeer) {
+                    log("set peer")
+                    const _gsAddrStr = ethers.utils.hexlify(_gsAddr)
+                    log("_gsAddr:",_gsAddrStr);
+                    const data = gsContract.interface.encodeFunctionData('setPeer', [lzEid, _gsAddrStr]);
+                    payloads.push(data)
+                    targets.push(gs.address)
+                    values.push(0)
+                } else {
+                    log("GS already has peer at", peerNetwork)
+                }
             } else {
-                log("enforced options already set for",peerNetwork,"lzEid:",lzEid)
+                log("Peer not set for", peerNetwork)
             }
         }
     }
@@ -60,7 +59,7 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
     log("values >> ", values)
 
     if(payloads.length == 0) {
-        log("enforced options have already been set for all chains")
+        log("Peers have already been set for all chains")
         return
     }
 
@@ -87,9 +86,9 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
     log("============================================================")
     let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
     if(tx && tx.transactionHash) {
-        log("scheduled setEnforcedOptions(struct) at", tx.transactionHash)
+        log("scheduled setPeer(lzEid,peerAddr) at", tx.transactionHash)
     } else {
-        log("ERROR scheduling setEnforcedOptions(struct)")
+        log("ERROR scheduling setPeer(lzEid,peerAddr)")
         return
     }
 
@@ -99,7 +98,7 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
 
     tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
     if(tx && tx.transactionHash) {
-        log("execute setEnforcedOptions(struct) at", tx.transactionHash)
+        log("execute setPeer(lzEid,peerAddr) at", tx.transactionHash)
     }
 
     for(let i = 0; i < lzPeers.length; i++) {
@@ -107,12 +106,14 @@ const updateEnforcedOptions: DeployFunction = async function (hre: HardhatRuntim
         if (network.name != peerNetwork) {
             const cfg = networkConfig[peerNetwork]
             const lzEid = Number(cfg.lzEid || "0");
-            const op = await gsContract.enforcedOptions(lzEid, 1)
-            log("op[", lzEid, "] after >> ", op)
+            const gsAddr = cfg.erc20Tokens?.gs || ""
+            const _gsAddr = ethers.utils.zeroPad(gsAddr, 32)
+            const hasPeer = await gsContract.isPeer(lzEid, _gsAddr);
+            log("Checking if Peer for network",peerNetwork," lzEid:", lzEid," gs:",gsAddr," is set?",hasPeer)
         }
     }
     log("----------------------------------------------------")
 }
 
 export default updateEnforcedOptions
-updateEnforcedOptions.tags = ["all-timelock", "update-enforced-options"]
+updateEnforcedOptions.tags = ["all-timelock", "timelock-lz-peers"]

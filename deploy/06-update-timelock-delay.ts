@@ -12,6 +12,7 @@ const updateMinDelay: DeployFunction = async function (hre: HardhatRuntimeEnviro
     log(`deployer: ${deployer}`)
 
     const confirmations = networkConfig[network.name].longBlockConfirmations;
+    log(`confirmations: ${confirmations}`)
 
     const _deployer = await hre.ethers.getSigner(deployer);
 
