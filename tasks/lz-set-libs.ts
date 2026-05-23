@@ -4,9 +4,9 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-libs --eid baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
+// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
 task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest network")
-    .addOptionalParam("eid", "Eid network")
+    .addOptionalParam("net", "Eid network")
     .addOptionalParam("lastid", "Custom last Id")
     .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
     .addOptionalParam("exec", "Set to > 0 to execute transaction")
@@ -61,7 +61,7 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
             const values = []
             for(let i = 0; i < lzPeers.length; i++) {
                 const peerNetwork = lzPeers[i]
-                const setNetwork = taskArgs.eid == peerNetwork || (!taskArgs.eid && network.name != peerNetwork)
+                const setNetwork = taskArgs.net == peerNetwork || (!taskArgs.net && network.name != peerNetwork)
                 if (setNetwork) {
                     const peerCfg = networkConfig[peerNetwork]
                     const lzEid = Number(peerCfg.lzEid || "0");
