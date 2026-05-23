@@ -62,7 +62,7 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
             for(let i = 0; i < lzPeers.length; i++) {
                 const peerNetwork = lzPeers[i]
                 const setNetwork = taskArgs.net == peerNetwork || (!taskArgs.net && network.name != peerNetwork)
-                if (setNetwork) {
+                if (setNetwork || !taskArgs.net) {
                     const peerCfg = networkConfig[peerNetwork]
                     const lzEid = Number(peerCfg.lzEid || "0");
                     if(lzEid == 0) continue;
