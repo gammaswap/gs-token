@@ -25,6 +25,7 @@ import "./tasks/lz-gen-config";
 import "./tasks/lz-set-config";
 import "./tasks/lz-set-delegate";
 import "./tasks/lz-set-libs";
+import "./tasks/timelock";
 
 const config: HardhatUserConfig = {
   solidity: {
