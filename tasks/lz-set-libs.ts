@@ -5,10 +5,16 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
 // configurations for LZ have to be set in helper-hardhat-config.ts file
+// to schedule one peer run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --exec 1"
 // to schedule one peer run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
 // to schedule one peer after cancellation run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
+// to schedule all peers run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --exec 1"
 // to schedule all peers run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
 // to schedule all peers after cancellation run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
+// to execute all peers run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 2 --exec 1"
+// to execute all peers run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 2 --lastid 0x12345... --exec 1"
+// to execute all peers after cancellation run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 2 --zerolastid 1 --exec 1"
+// to execute one peer run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 2 --lastid 0x12345 --exec 1" (when using action 2 must explicity set lastid or zeroId if previous was cancelled)
 task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest network")
     .addOptionalParam("net", "Eid network")
     .addOptionalParam("lastid", "Custom last Id")
@@ -138,8 +144,8 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
             const action = Number(taskArgs.action || "0")
             console.log("action:", action == 0 ? "schedule and execute" : action == 1 ? "schedule only" : "execute only")
             if(taskArgs.exec) {
-                console.log("execute")
                 if(action == 0 || action == 1) {
+                    console.log("exec schedule")
                     const scheduleTx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
                     if(scheduleTx && scheduleTx.transactionHash) {
                         console.log("scheduled batch setConfig() at", scheduleTx.transactionHash)
@@ -156,6 +162,7 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
                 }
 
                 if(action == 0 || action == 2) {
+                    console.log("exec execution")
                     const executeTx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
                     if(executeTx && executeTx.transactionHash) {
                         console.log("execute batch setConfig() at", executeTx.transactionHash)

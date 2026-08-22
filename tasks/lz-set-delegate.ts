@@ -5,8 +5,11 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 // run as "npx hardhat --network arbitrumSepolia lz-set-delegate --addr 0x1234... --lastid 0x12456789.."
 task("lz-set-delegate", "Set delegate for GS token's endpoint")
-    .addOptionalParam("addr", "Custom address of delegate")
+    .addOptionalParam("addr", "Custom address of delegate, if not set user timelockcontroller")
+    .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
+    .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
     .addOptionalParam("lastid", "Custom last Id in case last transaction was cancelled")
+    .addOptionalParam("exec", "Set to > 0 to execute transaction")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(
@@ -65,12 +68,14 @@ task("lz-set-delegate", "Set delegate for GS token's endpoint")
         const latestBlock = await hre.ethers.provider.getBlockNumber();
         console.log("latestBlock:", latestBlock)
 
-        // Fetch events
-        const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
+        let lastId = taskArgs.lastid
 
-        let lastId = taskArgs.lastid || events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
-        if(lastId == "0x") {
+        if(taskArgs.zerolastid) {
             lastId = hre.ethers.constants.HashZero
+        } else if(!lastId) {
+            // Fetch events
+            const events = await timelockControllerContract.queryFilter(timelockControllerContract.filters[eventName](), 0, latestBlock);
+            lastId = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
         }
         console.log("lastId:", lastId)
 
@@ -80,23 +85,34 @@ task("lz-set-delegate", "Set delegate for GS token's endpoint")
         console.log("values  :", values)
         console.log("lastId  :", lastId)
         console.log("============================================================")
-        let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
-        if(tx && tx.transactionHash) {
-            console.log("scheduled batch setDelegate() at", tx.transactionHash)
-        } else {
-            console.log("ERROR scheduling batch setDelegate()")
-            return
-        }
+        const action = Number(taskArgs.action || "0")
+        console.log("action:", action == 0 ? "schedule and execute" : action == 1 ? "schedule only" : "execute only")
+        if(taskArgs.exec) {
+            if (action == 0 || action == 1) {
+                console.log("exec schedule")
+                let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
+                if (tx && tx.transactionHash) {
+                    console.log("scheduled batch setDelegate() at", tx.transactionHash)
+                } else {
+                    console.log("ERROR scheduling batch setDelegate()")
+                    return
+                }
+            }
+            if (action == 0) {
+                const waitSeconds = Number(currMinDelay) + 20
+                console.log("waitSeconds:", waitSeconds)
+                await sleep(waitSeconds * 1000)
+            }
 
-        const waitSeconds = Number(currMinDelay) + 20
-        console.log("waitSeconds:",waitSeconds)
-        await sleep(waitSeconds * 1000)
-
-        tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
-        if(tx && tx.transactionHash) {
-            console.log("execute batch setDelegate() at", tx.transactionHash)
+            if (action == 0 || action == 2) {
+                console.log("exec execution")
+                let tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
+                if (tx && tx.transactionHash) {
+                    console.log("execute batch setDelegate() at", tx.transactionHash)
+                }
+            }
+                console.log("----------------------------------------------------")
         }
-        console.log("----------------------------------------------------")
     }
 );
 
