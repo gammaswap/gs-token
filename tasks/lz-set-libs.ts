@@ -4,11 +4,13 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
+// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
+// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
 task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest network")
     .addOptionalParam("net", "Eid network")
     .addOptionalParam("lastid", "Custom last Id")
     .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
+    .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
     .addOptionalParam("exec", "Set to > 0 to execute transaction")
     .setAction(async (taskArgs, hre) => {
             if (hre.network.name === "hardhat") {
@@ -62,7 +64,7 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
             for(let i = 0; i < lzPeers.length; i++) {
                 const peerNetwork = lzPeers[i]
                 const setNetwork = taskArgs.net == peerNetwork || (!taskArgs.net && network.name != peerNetwork)
-                if (setNetwork || !taskArgs.net) {
+                if (setNetwork) {
                     const peerCfg = networkConfig[peerNetwork]
                     const lzEid = Number(peerCfg.lzEid || "0");
                     if(lzEid == 0) continue;
@@ -130,23 +132,31 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
             console.log("lastId  :", lastId)
             console.log("salt    :", hre.ethers.constants.HashZero)
             console.log("============================================================")
+            const action = Number(taskArgs.action || "0")
+            console.log("action:", action == 0 ? "schedule and execute" : action == 1 ? "schedule only" : "execute only")
             if(taskArgs.exec) {
                 console.log("execute")
-                let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
-                if(tx && tx.transactionHash) {
-                    console.log("scheduled batch setConfig() at", tx.transactionHash)
-                } else {
-                    console.log("ERROR scheduling batch setConfig()")
-                    return
+                if(action == 0 || action == 1) {
+                    const scheduleTx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
+                    if(scheduleTx && scheduleTx.transactionHash) {
+                        console.log("scheduled batch setConfig() at", scheduleTx.transactionHash)
+                    } else {
+                        console.log("ERROR scheduling batch setConfig()")
+                        return
+                    }
                 }
 
-                const waitSeconds = Number(currMinDelay) + 20
-                console.log("waitSeconds:",waitSeconds)
-                await sleep(waitSeconds * 1000)
+                if(action == 0) {
+                    const waitSeconds = Number(currMinDelay) + 20
+                    console.log("waitSeconds:",waitSeconds)
+                    await sleep(waitSeconds * 1000)
+                }
 
-                tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
-                if(tx && tx.transactionHash) {
-                    console.log("execute batch setConfig() at", tx.transactionHash)
+                if(action == 0 || action == 2) {
+                    const executeTx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
+                    if(executeTx && executeTx.transactionHash) {
+                        console.log("execute batch setConfig() at", executeTx.transactionHash)
+                    }
                 }
                 console.log("----------------------------------------------------")
             }
