@@ -4,8 +4,11 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
-// run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
+// configurations for LZ have to be set in helper-hardhat-config.ts file
+// to schedule one peer run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
+// to schedule one peer after cancellation run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
+// to schedule all peers run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --lastid 0x12345... --exec 1"
+// to schedule all peers after cancellation run as "npx hardhat --network arbitrumSepolia lz-set-libs --net baseSepolia --action 1 --zerolastid 1 --exec 1"
 task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest network")
     .addOptionalParam("net", "Eid network")
     .addOptionalParam("lastid", "Custom last Id")
