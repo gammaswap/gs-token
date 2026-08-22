@@ -91,7 +91,7 @@ task("lz-set-libs", "Set sendLib and receiveLib for LZ network to src and dest n
                     console.log("srcEid:", lzEid, "-", peerNetwork, "- ReceiveLib: ", receiveLibAddress)
 
                     const receiveData = endpointContract.interface.encodeFunctionData('setReceiveLibrary',
-                        [oappAddress, lzEid, receiveLibAddress, 10]);
+                        [oappAddress, lzEid, receiveLibAddress, 0]);
                     payloads.push(receiveData)
                     targets.push(endpointAddress)
                     values.push(0)
