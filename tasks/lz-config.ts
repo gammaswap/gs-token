@@ -20,7 +20,10 @@ task("lz-config", "Checks LZ configurations from current network to destination 
     const ethereumLzEndpointABI = [
         'function getConfig(address _oapp, address _lib, uint32 _eid, uint32 _configType) external view returns (bytes memory config)',
         'function getSendLibrary(address _sender, uint32 _dstEid) external view returns (address lib)',
-        'function getReceiveLibrary(address _receiver, uint32 _srcEid) external view returns (address lib, bool isDefault)'
+        'function getReceiveLibrary(address _receiver, uint32 _srcEid) external view returns (address lib, bool isDefault)',
+        'function isDefaultSendLibrary(address _sender, uint32 _dstEid) external view returns (bool isDefault)',
+        'function defaultSendLibrary(uint32 _dstEid) external view returns (address lib)',
+        'function defaultReceiveLibrary(uint32 _srcEid) external view returns (address lib)',
     ];
 
     // Create a contract instance
@@ -30,7 +33,7 @@ task("lz-config", "Checks LZ configurations from current network to destination 
     let oappContract = await hre.ethers.getContractAt("GS", oappAddress);
     const endpointAddr = await oappContract.endpoint();
     console.log("endpointAddr:",endpointAddr)
-    const contract = await hre.ethers.getContractAt(ethereumLzEndpointABI, endpointAddr);
+    const endpointContract = await hre.ethers.getContractAt(ethereumLzEndpointABI, endpointAddr);
 
     const srcCfg = networkConfig[network.name]
     if(!srcCfg) {
@@ -51,16 +54,26 @@ task("lz-config", "Checks LZ configurations from current network to destination 
     const destEid = Number(destCfg.lzEid || "0");
     console.log("destEid:",destEid)
 
-    let sendLibAddress = await contract.getSendLibrary(oappAddress, destEid);
-    let receiveLibAddress = (await contract.getReceiveLibrary(oappAddress, srcEid))?.lib || "0x";
-    console.log("sendLibAddress:",sendLibAddress)
-    console.log("receiveLibAddress:",receiveLibAddress)
+    const sendLibAddress = await endpointContract.getSendLibrary(oappAddress, destEid);
+    const receiveLibResult = (await endpointContract.getReceiveLibrary(oappAddress, destEid));
+    const receiveLibAddress = receiveLibResult?.lib || "0x";
+    const isDefaultSendLib = await endpointContract.isDefaultSendLibrary(oappAddress, destEid);
+    console.log("sendLibAddress     :",sendLibAddress);
+    console.log("isDefaultSendLib   :",isDefaultSendLib);
+    console.log("receiveLibAddress  :",receiveLibAddress);
+    console.log("isReceiveLibDefault:",receiveLibResult?.isDefault || false);
+    console.log("=============EndpointV2 Default Libs=================");
+    const defaultSendLibAddress = await endpointContract.defaultSendLibrary(destEid);
+    console.log("defaultSendLibAddress   :",defaultSendLibAddress);
+    const defaultReceiveLibAddress = await endpointContract.defaultReceiveLibrary(srcEid);
+    console.log("defaultReceiveLibAddress:",defaultReceiveLibAddress);
+    console.log("=====================================================");
     const executorConfigType = 1; // 1 for executor
     const ulnConfigType = 2; // 2 for UlnConfig
 
     try {
         // Fetch and decode for sendLib (both Executor and ULN Config)
-        const sendExecutorConfigBytes = await contract.getConfig(
+        const sendExecutorConfigBytes = await endpointContract.getConfig(
             oappAddress,
             sendLibAddress,
             destEid,
@@ -73,7 +86,7 @@ task("lz-config", "Checks LZ configurations from current network to destination 
         );
         console.log('Send Library Executor Config:', executorConfigArray);
 
-        const sendUlnConfigBytes = await contract.getConfig(
+        const sendUlnConfigBytes = await endpointContract.getConfig(
             oappAddress,
             sendLibAddress,
             destEid,
@@ -89,7 +102,7 @@ task("lz-config", "Checks LZ configurations from current network to destination 
         console.log('Send Library ULN Config:', sendUlnConfigArray);
 
         // Fetch and decode for receiveLib (only ULN Config)
-        const receiveUlnConfigBytes = await contract.getConfig(
+        const receiveUlnConfigBytes = await endpointContract.getConfig(
             oappAddress,
             receiveLibAddress,
             destEid,
