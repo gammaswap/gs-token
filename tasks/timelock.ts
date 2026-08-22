@@ -3,8 +3,8 @@ import { networkConfig } from "../helper-hardhat-config";
 import { TimelockController } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-// run as "npx hardhat --network arbitrumSepolia timelock --action 1"
-// run as "npx hardhat --network arbitrumSepolia timelock --action 2 --txid 0x12456789.."
+// to list transactions run as "npx hardhat --network arbitrumSepolia timelock --action 1"
+// to cancel a transaction run as "npx hardhat --network arbitrumSepolia timelock --action 2 --txid 0x12456789.. --exec 1"
 task("timelock", "Cancel scheduled transactions or list scheduled transactions")
     .addOptionalParam("action", "1=list, 2=cancel")
     .addOptionalParam("txid", "txid to cancel when action=2")
