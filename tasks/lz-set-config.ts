@@ -49,9 +49,9 @@ task("lz-set-config", "Set config for LZ network to dest network")
         const gsContract = (await hre.ethers.getContractAt('GS', gs.address)) as unknown as GS;
 
         const oappAddress = gs.address; // Replace with your OApp address
-        const sendLibAddress = networkConfig[network.name].lzSendLib; // Replace with your send message library address
-        const receiveLibAddress = networkConfig[network.name].lzReceiveLib; // Replace with your send message library address
-        const executorAddress = networkConfig[network.name].lzExecutor;
+        const sendLibAddress = networkConfig[network.name].lzSendLib as string; // Replace with your send message library address
+        const receiveLibAddress = networkConfig[network.name].lzReceiveLib as string; // Replace with your send message library address
+        const executorAddress = networkConfig[network.name].lzExecutor as string;
 
         console.log(`oappAddress: ${oappAddress}`)
         console.log(`sendLibAddress: ${sendLibAddress}`)
