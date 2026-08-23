@@ -172,12 +172,21 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
             if (peerEid === 0) continue;
 
             const isPeerSupported = await endpointContract.isSupportedEid(peerEid);
-            if (!isPeerSupported) continue;
+            if (!isPeerSupported) {
+                console.log("Peer",peerNetwork,"with eid",peerEid,"is not supported")
+                continue;
+            }
 
             const sendCfg = cfg.lzSendULNConfig?.[peerNetwork];
             if (sendCfg) {
                 const sendUlnConfig = getUlnConfig(sendCfg);
                 if (!validateUlnConfig(sendUlnConfig, hre, `Invalid send config for ${peerNetwork}`)) return;
+
+                console.log("==================Send Config Params Start==============================")
+                console.log("destEid:", peerEid, "-", peerNetwork)
+                console.log("lzSendULN.confirmation:", sendUlnConfig.confirmations)
+                console.log("lzSendULN.requiredDVNCount:", sendUlnConfig.requiredDVNCount)
+                console.log("lzSendULN.requiredDVNs:", sendUlnConfig.requiredDVNs)
 
                 const encodedUlnConfig = hre.ethers.utils.defaultAbiCoder.encode(
                     [ulnConfigType],
@@ -207,12 +216,19 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
                 targets.push(endpointAddress);
                 values.push(0);
                 payloads.push(sendConfigData);
+                console.log("==================Send Config Params End==============================")
             }
 
             const receiveCfg = cfg.lzReceiveULNConfig?.[peerNetwork];
             if (receiveCfg) {
                 const receiveUlnConfig = getUlnConfig(receiveCfg);
                 if (!validateUlnConfig(receiveUlnConfig, hre, `Invalid receive config for ${peerNetwork}`)) return;
+
+                console.log("==================Receive Config Params Start==============================")
+                console.log("destEid:", peerEid, "-", peerNetwork)
+                console.log("lzReceiveULN.confirmation:", receiveUlnConfig.confirmations)
+                console.log("lzReceiveULN.requiredDVNCount:", receiveUlnConfig.requiredDVNCount)
+                console.log("lzReceiveULN.requiredDVNs:", receiveUlnConfig.requiredDVNs)
 
                 const encodedUlnConfig = hre.ethers.utils.defaultAbiCoder.encode(
                     [ulnConfigType],
@@ -237,6 +253,7 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
                 targets.push(endpointAddress);
                 values.push(0);
                 payloads.push(receiveConfigData);
+                console.log("==================Receive Config Params End==============================")
             }
         }
 
@@ -245,31 +262,46 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
             return;
         }
 
-        const timelockContract = await hre.ethers.getContractAt(
-            "TimelockController",
-            timelock.address
-        );
+        const timelockContract = await hre.ethers.getContractAt("TimelockController", timelock.address);
         const currentMinDelay = await timelockContract.getMinDelay();
+
+        const latestBlock = await hre.ethers.provider.getBlockNumber();
+        console.log("latestBlock:", latestBlock);
 
         let predecessor = taskArgs.lastid;
         if (taskArgs.zerolastid) {
             predecessor = hre.ethers.constants.HashZero;
         } else if (!predecessor) {
-            const latestBlock = await hre.ethers.provider.getBlockNumber();
             const events = await timelockContract.queryFilter(
                 timelockContract.filters.CallScheduled(),
                 0,
                 latestBlock
             );
-            predecessor = events.length > 0
-                ? events[events.length - 1].args.id
-                : hre.ethers.constants.HashZero;
+            predecessor = events.length > 0 ? events[events.length - 1].args.id : hre.ethers.constants.HashZero;
         }
 
-        console.log(`predecessor: ${predecessor}`);
-        console.log(`target count: ${targets.length}`);
-        console.log(`payload count: ${payloads.length}`);
-        console.log(`current minDelay: ${currentMinDelay}`);
+        const salt = hre.ethers.constants.HashZero;
+
+        console.log("lastId:", predecessor);
+
+        console.log("==================scheduleBatch parameters==================");
+        console.log("payloads:", payloads);
+        console.log("targets :", targets);
+        console.log("values  :", values);
+        console.log("lastId  :", predecessor);
+        console.log("salt    :", salt);
+        console.log("delay   :", currentMinDelay);
+        console.log("============================================================");
+
+        console.log("==================transaction details==================");
+        for (let i = 0; i < payloads.length; i++) {
+            console.log(`transaction[${i}] target:`, targets[i]);
+            console.log(`transaction[${i}] value :`, values[i]);
+            console.log(`transaction[${i}] data  :`, payloads[i]);
+            console.log('-------------------------------------------------------');
+        }
+        console.log("========================================================");
+        console.log("action:", action === 0 ? "schedule and execute" : action === 1 ? "schedule only" : "execute only");
 
         if (!taskArgs.exec) {
             console.log("No transaction submitted. Pass --exec 1 to submit.");
@@ -277,13 +309,14 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
         }
 
         if (action === 0 || action === 1) {
+            console.log("exec schedule");
             const tx = await (
                 await timelockContract.connect(deployerSigner).scheduleBatch(
                     targets,
                     values,
                     payloads,
                     predecessor,
-                    hre.ethers.constants.HashZero,
+                    salt,
                     currentMinDelay
                 )
             ).wait(confirmations);
@@ -298,18 +331,21 @@ task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the 
         }
 
         if (action === 0 || action === 2) {
+            console.log("exec execute");
             const tx = await (
                 await timelockContract.connect(deployerSigner).executeBatch(
                     targets,
                     values,
                     payloads,
                     predecessor,
-                    hre.ethers.constants.HashZero
+                    salt
                 )
             ).wait(confirmations);
 
             console.log(`executed combined batch at ${tx.transactionHash}`);
         }
+
+        console.log("----------------------------------------------------")
     });
 
 function getUlnConfig(config: any): any {
@@ -323,11 +359,7 @@ function getUlnConfig(config: any): any {
     };
 }
 
-function validateUlnConfig(
-    config: any,
-    hre: HardhatRuntimeEnvironment,
-    errorName: string
-): boolean {
+function validateUlnConfig(config: any, hre: HardhatRuntimeEnvironment, errorName: string): boolean {
     if (config.confirmations <= 0) {
         console.log(`${errorName}: invalid confirmations`);
         return false;
@@ -351,11 +383,7 @@ function validateUlnConfig(
     return true;
 }
 
-function validateAddresses(
-    addresses: string[],
-    allowEmptyList: boolean,
-    hre: HardhatRuntimeEnvironment
-): boolean {
+function validateAddresses(addresses: string[], allowEmptyList: boolean, hre: HardhatRuntimeEnvironment): boolean {
     if (!allowEmptyList && addresses.length === 0) {
         return false;
     }
@@ -369,11 +397,7 @@ function validateAddresses(
     return true;
 }
 
-function validateAddress(
-    address: string | undefined,
-    hre: HardhatRuntimeEnvironment,
-    errorMessage: string
-): boolean {
+function validateAddress(address: string | undefined, hre: HardhatRuntimeEnvironment, errorMessage: string): boolean {
     if (
         !address ||
         !hre.ethers.utils.isAddress(address) ||
