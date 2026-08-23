@@ -66,23 +66,85 @@ export const networkConfig: networkConfigInfo = {
         lzReceiveLib: "0xc02Ab410f0734EFa3F14628780e6e695156024C2",
         lzExecutor: "0x173272739Bd7Aa6e4e214714048a9fE699453059",
         lzSendULNConfig: {
-            sonic: {
-                confirmations: 15,
-                requiredDVNCount: 2,
+            arbitrum: {
+                confirmations: 32,
+                requiredDVNCount: 4,
                 requiredDVNs: [
-                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b', // LayerZero Labs
-                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5' // Nethermind
-                ]
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            base: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         },
         lzReceiveULNConfig: {
-            sonic: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+            arbitrum: {
+                confirmations: 32,
+                requiredDVNCount: 4,
                 requiredDVNs: [
-                    '0x589dEDbD617e0CBcB916A9223F4d1300c294236b', // LayerZero Labs
-                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5' // Nethermind
-                ]
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            base: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
+                    '0x589dedbd617e0cbcb916a9223f4d1300c294236b', // LayerZero Labs
+                    '0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd', // Canary
+                    '0xa59ba433ac34d2927232918ef5b2eaafcf130ba5', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         }
     },
@@ -201,23 +263,85 @@ export const networkConfig: networkConfigInfo = {
         lzReceiveLib: "0x7B9E184e07a6EE1aC23eAe0fe8D6Be2f663f05e6",
         lzExecutor: "0x31CAe3B7fB82d847621859fb1585353c5720660D",
         lzSendULNConfig: {
-            sonic: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+            base: {
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
+                    '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Nethermind
+                    '0xf2E380c90e6c09721297526dbC74f870e114dfCb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            mainnet: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Nethermind
+                    '0xf2E380c90e6c09721297526dbC74f870e114dfCb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 30,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x19670df5e16bea2ba9b9e68b48c054c5baea06b8', // Horizen
                     '0x2f55c492897526677c5b68fb199ea31e2c126416', // LayerZero Labs
-                    '0xa7b5189bca84cd304d8553977c7c614329750d99' // Nethermind
-                ]
+                    '0xa7b5189bca84cd304d8553977c7c614329750d99', // Nethermind
+                    '0xf2e380c90e6c09721297526dbc74f870e114dfcb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         },
         lzReceiveULNConfig: {
-            sonic: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+            base: {
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
+                    '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Nethermind
+                    '0xf2E380c90e6c09721297526dbC74f870e114dfCb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            mainnet: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
+                    '0x2f55C492897526677C5B68fb199ea31E2c126416', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Nethermind
+                    '0xf2E380c90e6c09721297526dbC74f870e114dfCb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 30,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x19670df5e16bea2ba9b9e68b48c054c5baea06b8', // Horizen
                     '0x2f55c492897526677c5b68fb199ea31e2c126416', // LayerZero Labs
-                    '0xa7b5189bca84cd304d8553977c7c614329750d99' // Nethermind
-                ]
+                    '0xa7b5189bca84cd304d8553977c7c614329750d99', // Nethermind
+                    '0xf2e380c90e6c09721297526dbc74f870e114dfcb', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         }
     },
@@ -241,23 +365,85 @@ export const networkConfig: networkConfigInfo = {
         lzReceiveLib: "0xc70AB6f32772f59fBfc23889Caf4Ba3376C84bAf",
         lzExecutor: "0x2CCA08ae69E0C44b18a57Ab2A87644234dAebaE4",
         lzSendULNConfig: {
-            sonic: {
-                confirmations: 10,
-                requiredDVNCount: 2,
+            arbitrum: {
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
+                    '0x9e059a54699a285714207b43B055483E78FAac25', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37CA043f8479064e10635020c65FfC005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            mainnet: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
+                    '0x9e059a54699a285714207b43B055483E78FAac25', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37CA043f8479064e10635020c65FfC005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 30,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
                     '0x9e059a54699a285714207b43b055483e78faac25', // LayerZero Labs
-                    '0xcd37ca043f8479064e10635020c65ffc005d36f6' // Nethermind
-                ]
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37ca043f8479064e10635020c65ffc005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         },
         lzReceiveULNConfig: {
-            sonic: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+            arbitrum: {
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
+                    '0x9e059a54699a285714207b43B055483E78FAac25', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37CA043f8479064e10635020c65FfC005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            mainnet: {
+                confirmations: 32,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
+                    '0x9e059a54699a285714207b43B055483E78FAac25', // LayerZero Labs
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37CA043f8479064e10635020c65FfC005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
+            },
+            sonic: {
+                confirmations: 30,
+                requiredDVNCount: 4,
+                requiredDVNs: [
+                    '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
                     '0x9e059a54699a285714207b43b055483e78faac25', // LayerZero Labs
-                    '0xcd37ca043f8479064e10635020c65ffc005d36f6' // Nethermind
-                ]
+                    '0xa7b5189bcA84Cd304D8553977c7C614329750d99', // Horizen
+                    '0xcd37ca043f8479064e10635020c65ffc005d36f6', // Nethermind
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         }
     },
@@ -311,54 +497,84 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x4208D6E27538189bB48E603D6123A94b8Abe0A0b",
         lzSendULNConfig: {
             base: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             },
             arbitrum: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+                confirmations: 32,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         },
         lzReceiveULNConfig: {
             base: {
-                confirmations: 10,
-                requiredDVNCount: 2,
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             },
             arbitrum: {
-                confirmations: 20,
-                requiredDVNCount: 2,
+                confirmations: 30,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 15,
-                requiredDVNCount: 2,
+                confirmations: 32,
+                requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
-                    '0x282b3386571f7f794450d5789911a9804FA346b4' // LayerZero Labs
-                ]
+                    '0x282b3386571f7f794450d5789911a9804FA346b4', // LayerZero Labs
+                    '0x54dd79f5ce72b51fcbbcb170dd01e32034323565', // Horizen
+                    '0xb2c7832aa8dda878de6f949485f927e9e532e92c', // Canary
+                ],
+                optionalDVNCount: 255,
+                optionalDVNThreshold: 0,
+                optionalDVNs: [],
             }
         }
     },
