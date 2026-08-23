@@ -4,7 +4,17 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
+// update all paths
+//   npx hardhat --network baseSepolia lz-set-config --action 1 --exec 1
+//   npx hardhat --network baseSepolia lz-set-config --action 2 --lastid 0xlastTxId... --exec 1
+//
+// update path of only arbSepolia to baseSepolia
+//   npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --action 1 --exec 1"
+//   npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --action 2 --lastid 0xlastTxId... --exec 1"
+//
+// Use zerolastid if previous transaction was cancelled
+//   npx hardhat --network baseSepolia lz-set-config --action 1 --zerolastid 1 --exec 1
+//   npx hardhat --network baseSepolia lz-set-config --action 2 --zerolastid 1 --exec 1
 task("lz-set-config", "Set config for LZ network to dest network")
     .addOptionalParam("dest", "Destination network")
     .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
