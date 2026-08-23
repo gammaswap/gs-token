@@ -7,6 +7,7 @@ const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifa
 // run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
 task("lz-set-config", "Set config for LZ network to dest network")
     .addOptionalParam("dest", "Destination network")
+    .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
     .addOptionalParam("lastid", "Custom last Id")
     .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
     .addOptionalParam("exec", "Set to > 0 to execute transaction")
@@ -193,24 +194,37 @@ task("lz-set-config", "Set config for LZ network to dest network")
         console.log("lastId  :", lastId)
         console.log("salt    :", hre.ethers.constants.HashZero)
         console.log("============================================================")
+        const action = Number(taskArgs.action || "0")
+        console.log("action:", action == 0 ? "schedule and execute" : action == 1 ? "schedule only" : "execute only")
         if(taskArgs.exec) {
-            console.log("execute")
-            let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
-            if(tx && tx.transactionHash) {
-                console.log("scheduled batch setConfig() at", tx.transactionHash)
-            } else {
-                console.log("ERROR scheduling batch setConfig()")
-                return
+            if(action == 0 || action == 1) {
+                console.log("exec schedule");
+                const tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
+                if(tx && tx.transactionHash) {
+                    console.log("scheduled batch setConfig() at", tx.transactionHash)
+                } else {
+                    console.log("ERROR scheduling batch setConfig()")
+                    return
+                }
             }
 
-            const waitSeconds = Number(currMinDelay) + 20
-            console.log("waitSeconds:",waitSeconds)
-            await sleep(waitSeconds * 1000)
-
-            tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
-            if(tx && tx.transactionHash) {
-                console.log("execute batch setConfig() at", tx.transactionHash)
+            if(action == 0) {
+                const waitSeconds = Number(currMinDelay) + 20
+                console.log("waitSeconds:",waitSeconds)
+                await sleep(waitSeconds * 1000)
             }
+
+            if(action == 0 || action == 2) {
+                console.log("exec execute");
+                const tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
+                if(tx && tx.transactionHash) {
+                    console.log("execute batch setConfig() at", tx.transactionHash)
+                } else {
+                    console.log("ERROR scheduling batch setConfig()")
+                    return
+                }
+            }
+
             console.log("----------------------------------------------------")
         }
     }
