@@ -1,15 +1,8 @@
 import { task } from "hardhat/config";
-import {
-    developmentLzPeers,
-    networkConfig,
-    productionLzPeers,
-} from "../helper-hardhat-config";
+import { developmentLzPeers, networkConfig, productionLzPeers } from "../helper-hardhat-config";
 import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-
-const { abi: EndpointV2ABI } = require(
-    "@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json"
-);
+const { abi: EndpointV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json");
 
 // LayerZero libraries and configs must be set in helper-hardhat-config.ts.
 //
@@ -35,30 +28,12 @@ const { abi: EndpointV2ABI } = require(
 //   2 = execute only
 //
 // --exec must be supplied for transactions to be submitted.
-task(
-    "lz-set-libs-and-config",
-    "Set LayerZero libraries and configs through the timelock"
-)
-    .addOptionalParam(
-        "dest",
-        "Destination network; omit to configure all configured peers"
-    )
-    .addOptionalParam(
-        "action",
-        "0=schedule and execute, 1=schedule only, 2=execute only, default=0"
-    )
-    .addOptionalParam(
-        "lastid",
-        "Timelock predecessor operation ID"
-    )
-    .addOptionalParam(
-        "zerolastid",
-        "Use HashZero as the predecessor, for example after cancellation"
-    )
-    .addOptionalParam(
-        "exec",
-        "Set to > 0 to submit transactions"
-    )
+task("lz-set-libs-and-config", "Set LayerZero libraries and configs through the timelock")
+    .addOptionalParam("dest", "Destination network; omit to configure all configured peers")
+    .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
+    .addOptionalParam("lastid", "Timelock predecessor operation ID")
+    .addOptionalParam("zerolastid", "Use HashZero as the predecessor, for example after cancellation")
+    .addOptionalParam("exec", "Set to > 0 to submit transactions")
     .setAction(async (taskArgs, hre) => {
         if (hre.network.name === "hardhat") {
             console.warn(
@@ -95,10 +70,7 @@ task(
             return;
         }
 
-        const gsContract = (await hre.ethers.getContractAt(
-            "GS",
-            gs.address
-        )) as unknown as GS;
+        const gsContract = (await hre.ethers.getContractAt("GS", gs.address)) as unknown as GS;
 
         const oappAddress = gs.address;
         const endpointAddress = await gsContract.endpoint();
@@ -116,15 +88,9 @@ task(
         if (!validateAddress(receiveLibAddress, hre, `Invalid receive library: ${receiveLibAddress}`)) return;
         if (!validateAddress(executorAddress, hre, `Invalid executor: ${executorAddress}`)) return;
 
-        const endpointContract = new hre.ethers.Contract(
-            endpointAddress,
-            EndpointV2ABI,
-            deployerSigner
-        );
+        const endpointContract = new hre.ethers.Contract(endpointAddress, EndpointV2ABI, deployerSigner);
 
-        const peers = isMainnet(hre)
-            ? productionLzPeers
-            : developmentLzPeers;
+        const peers = isMainnet(hre) ? productionLzPeers : developmentLzPeers;
 
         const selectedPeers = peers.filter((peerNetwork) => {
             if (taskArgs.dest) {
