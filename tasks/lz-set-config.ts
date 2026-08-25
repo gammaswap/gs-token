@@ -234,7 +234,6 @@ task("lz-set-config", "Set config for LZ network to dest network")
                     return
                 }
             }
-
             console.log("----------------------------------------------------")
         }
     }
