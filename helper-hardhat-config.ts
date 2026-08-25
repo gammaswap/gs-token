@@ -67,7 +67,7 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x173272739Bd7Aa6e4e214714048a9fE699453059",
         lzSendULNConfig: {
             arbitrum: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -80,7 +80,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             base: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -93,7 +93,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -108,7 +108,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             arbitrum: {
-                confirmations: 32,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -121,7 +121,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             base: {
-                confirmations: 32,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -134,7 +134,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 32,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x380275805876ff19055ea900cdb2b46a94ecf20d', // Horizen
@@ -358,7 +358,7 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x31CAe3B7fB82d847621859fb1585353c5720660D",
         lzSendULNConfig: {
             base: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
@@ -371,7 +371,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
@@ -384,7 +384,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670df5e16bea2ba9b9e68b48c054c5baea06b8', // Horizen
@@ -399,7 +399,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             base: {
-                confirmations: 30,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
@@ -412,7 +412,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670Df5E16bEa2ba9b9e68b48C054C5bAEa06B8', // Horizen
@@ -425,7 +425,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x19670df5e16bea2ba9b9e68b48c054c5baea06b8', // Horizen
@@ -460,7 +460,7 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x2CCA08ae69E0C44b18a57Ab2A87644234dAebaE4",
         lzSendULNConfig: {
             arbitrum: {
-                confirmations: 30,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -473,7 +473,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -486,7 +486,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 30,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -501,7 +501,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             arbitrum: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -514,7 +514,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -527,7 +527,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             sonic: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x554833698Ae0FB22ECC90B01222903fD62CA4B47', // Canary
@@ -645,7 +645,7 @@ export const networkConfig: networkConfigInfo = {
         lzExecutor: "0x4208D6E27538189bB48E603D6123A94b8Abe0A0b",
         lzSendULNConfig: {
             base: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
@@ -658,7 +658,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             arbitrum: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
@@ -671,7 +671,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
@@ -686,7 +686,7 @@ export const networkConfig: networkConfigInfo = {
         },
         lzReceiveULNConfig: {
             base: {
-                confirmations: 30,
+                confirmations: 10,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
@@ -699,7 +699,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             arbitrum: {
-                confirmations: 30,
+                confirmations: 20,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
@@ -712,7 +712,7 @@ export const networkConfig: networkConfigInfo = {
                 optionalDVNs: [],
             },
             mainnet: {
-                confirmations: 32,
+                confirmations: 15,
                 requiredDVNCount: 4,
                 requiredDVNs: [
                     '0x05AaEfDf9dB6E0f7d27FA3b6EE099EDB33dA029E', // Nethermind
