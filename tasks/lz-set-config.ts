@@ -4,9 +4,20 @@ import { GS } from "../typechain-types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 const { abi: EndpoingV2ABI } = require("@layerzerolabs/lz-evm-protocol-v2/artifacts/contracts/EndpointV2.sol/EndpointV2.json")
 
-// run as "npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --lastid 0x12345... --zerolastid 1 --exec 1"
+// update all paths
+//   npx hardhat --network baseSepolia lz-set-config --action 1 --exec 1
+//   npx hardhat --network baseSepolia lz-set-config --action 2 --lastid 0xlastTxId... --exec 1
+//
+// update path of only arbSepolia to baseSepolia
+//   npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --action 1 --exec 1"
+//   npx hardhat --network arbitrumSepolia lz-set-config --dest baseSepolia --action 2 --lastid 0xlastTxId... --exec 1"
+//
+// Use zerolastid if previous transaction was cancelled
+//   npx hardhat --network baseSepolia lz-set-config --action 1 --zerolastid 1 --exec 1
+//   npx hardhat --network baseSepolia lz-set-config --action 2 --zerolastid 1 --exec 1
 task("lz-set-config", "Set config for LZ network to dest network")
     .addOptionalParam("dest", "Destination network")
+    .addOptionalParam("action", "0=schedule and execute, 1=schedule only, 2=execute only, default=0")
     .addOptionalParam("lastid", "Custom last Id")
     .addOptionalParam("zerolastid", "Set to > 0 to set last Id to zero hash (e.g. last transaction was cancelled)")
     .addOptionalParam("exec", "Set to > 0 to execute transaction")
@@ -38,9 +49,9 @@ task("lz-set-config", "Set config for LZ network to dest network")
         const gsContract = (await hre.ethers.getContractAt('GS', gs.address)) as unknown as GS;
 
         const oappAddress = gs.address; // Replace with your OApp address
-        const sendLibAddress = networkConfig[network.name].lzSendLib; // Replace with your send message library address
-        const receiveLibAddress = networkConfig[network.name].lzReceiveLib; // Replace with your send message library address
-        const executorAddress = networkConfig[network.name].lzExecutor;
+        const sendLibAddress = networkConfig[network.name].lzSendLib as string; // Replace with your send message library address
+        const receiveLibAddress = networkConfig[network.name].lzReceiveLib as string; // Replace with your send message library address
+        const executorAddress = networkConfig[network.name].lzExecutor as string;
 
         console.log(`oappAddress: ${oappAddress}`)
         console.log(`sendLibAddress: ${sendLibAddress}`)
@@ -193,23 +204,35 @@ task("lz-set-config", "Set config for LZ network to dest network")
         console.log("lastId  :", lastId)
         console.log("salt    :", hre.ethers.constants.HashZero)
         console.log("============================================================")
+        const action = Number(taskArgs.action || "0")
+        console.log("action:", action == 0 ? "schedule and execute" : action == 1 ? "schedule only" : "execute only")
         if(taskArgs.exec) {
-            console.log("execute")
-            let tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
-            if(tx && tx.transactionHash) {
-                console.log("scheduled batch setConfig() at", tx.transactionHash)
-            } else {
-                console.log("ERROR scheduling batch setConfig()")
-                return
+            if(action == 0 || action == 1) {
+                console.log("exec schedule");
+                const tx = await (await timelockControllerContract.connect(_deployer).scheduleBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero, currMinDelay)).wait(confirmations);
+                if(tx && tx.transactionHash) {
+                    console.log("scheduled batch setConfig() at", tx.transactionHash)
+                } else {
+                    console.log("ERROR scheduling batch setConfig()")
+                    return
+                }
             }
 
-            const waitSeconds = Number(currMinDelay) + 20
-            console.log("waitSeconds:",waitSeconds)
-            await sleep(waitSeconds * 1000)
+            if(action == 0) {
+                const waitSeconds = Number(currMinDelay) + 20
+                console.log("waitSeconds:",waitSeconds)
+                await sleep(waitSeconds * 1000)
+            }
 
-            tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
-            if(tx && tx.transactionHash) {
-                console.log("execute batch setConfig() at", tx.transactionHash)
+            if(action == 0 || action == 2) {
+                console.log("exec execute");
+                const tx = await (await timelockControllerContract.connect(_deployer).executeBatch(targets, values, payloads, lastId, hre.ethers.constants.HashZero)).wait(confirmations);
+                if(tx && tx.transactionHash) {
+                    console.log("execute batch setConfig() at", tx.transactionHash)
+                } else {
+                    console.log("ERROR scheduling batch setConfig()")
+                    return
+                }
             }
             console.log("----------------------------------------------------")
         }

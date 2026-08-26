@@ -139,6 +139,7 @@ typechain-types
 # Hardhat files
 cache
 artifacts
+scripts/safe/*
 
 # IDE
 .idea
